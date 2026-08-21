@@ -1,0 +1,58 @@
+
+# Dependencies and package-manager state
+node_modules/
+.npm/
+.pnpm-store/
+
+# Environment files and local secrets
+.env
+.env.*
+!.env.example
+
+# Playwright and test-run artifacts
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
+playwright/.auth/
+
+# Allure reports and raw results
+allure-results/
+allure-report/
+
+# Coverage and generated build output
+coverage/
+.nyc_output/
+dist/
+build/
+out/
+*.tsbuildinfo
+
+# Logs and temporary files
+*.log
+logs/
+tmp/
+temp/
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# IDE and editor files
+.idea/
+*.iml
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+
+# Local Claude Code permissions and paths
+.claude/settings.local.json
+
+# Operating-system files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
