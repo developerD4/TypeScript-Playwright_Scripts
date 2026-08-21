@@ -1,0 +1,41 @@
+JavaScript Starts
+        │
+        ▼
+   Call Stack
+        │
+        │
+        ├───────────────┐
+        │               │
+        ▼               ▼
+Normal Code         Async API
+                    (Timer, Fetch,
+                     Click, FS)
+                        │
+                        ▼
+                    Web APIs
+                        │
+         ┌──────────────┴──────────────┐
+         ▼                             ▼
+Microtask Queue                 Macrotask Queue
+(Promise.then)             (setTimeout, onclick)
+         │                             │
+         └──────────────┬──────────────┘
+                        ▼
+                  Event Loop
+                        │
+         Is Call Stack Empty?
+                        │
+                Yes ─────────► Execute **all** Microtasks
+                               │
+                               ▼
+                         Execute one Macrotask
+                               │
+                               ▼
+                           Repeat forever
+
+Key takeaways:
+Call Stack executes synchronous code.
+Web APIs handle asynchronous operations like timers, network requests, and events.
+Completed Promise callbacks (.then(), .catch(), .finally()) go to the Microtask Queue.
+Completed timer and event callbacks (setTimeout, onclick, I/O callbacks) go to the Macrotask Queue.
+The Event Loop waits until the Call Stack is empty, then executes all microtasks before taking the next macrotask. This priority is why Promise callbacks run before setTimeout(..., 0) callbacks.
