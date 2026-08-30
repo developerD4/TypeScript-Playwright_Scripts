@@ -3,7 +3,6 @@ import { test, expect } from '@playwright/test';
 /**
  * 4. Test hooks: beforeAll, beforeEach, afterEach, afterAll
  *
- * Hooks let you run shared code around your tests without a custom fixture:
  * - beforeAll  / afterAll  : run ONCE for the whole describe block (before
  *   the first test / after the last test).
  * - beforeEach / afterEach : run before/after EVERY individual test.
@@ -45,5 +44,3 @@ test.describe('04 - Test hooks', () => {
   });
 });
 
-// Mini-exercise: add a beforeEach that logs testInfo.title before the test
-// runs, and compare its output order against afterEach's in the console.

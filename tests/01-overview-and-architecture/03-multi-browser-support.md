@@ -1,42 +1,26 @@
-# 3. Multi-Browser Support — Chromium, Firefox, and WebKit Engines
+# Multi-Browser Support — Chromium, Firefox, and WebKit
 
-## What's going on
+Playwright allows us to run the same test on different browser engines. The three main engines are **Chromium**, **Firefox**, and **WebKit**. Chromium is used by browsers such as Chrome and Edge, Firefox is used by Mozilla Firefox, and WebKit is the engine used by Safari. We don't need to write separate tests for each browser. We write the test **once**, and Playwright can run the same test against all three browsers. This helps us find browser-specific issues. For example, a website may work correctly in Chrome but have a problem in Safari. Playwright lets us test the same application across different browsers to catch such problems.
 
-Real users don't all use the same browser. Playwright supports three
-rendering **engines**, which together cover the vast majority of real-world
-browsers:
+| Browser Engine | Common Browsers | Playwright Name |
+| -------------- | --------------- | --------------- |
+| Chromium       | Chrome, Edge    | `chromium`      |
+| Firefox        | Firefox         | `firefox`       |
+| WebKit         | Safari          | `webkit`        |
 
-| Engine    | Ships as (real-world browsers)      | Playwright project name |
-|-----------|--------------------------------------|--------------------------|
-| Chromium  | Google Chrome, Microsoft Edge, Brave | `chromium`               |
-| Firefox   | Mozilla Firefox                      | `firefox`                |
-| WebKit    | Apple Safari (macOS/iOS)              | `webkit`                 |
+In `playwright.config.ts`, Playwright uses **projects** to define which browsers should run the tests. When we run the tests, Playwright can execute the same test on Chromium, Firefox, and WebKit.
 
-Instead of writing a separate test suite per browser, you write your tests
-**once**, and Playwright's config (`projects` in `playwright.config.ts`) runs
-that same suite against each engine. This is already set up for you when you
-scaffold a project with `npm init playwright@latest` — look at the
-`projects: []` array in `playwright.config.ts`.
+**Simple idea:** Write the test **once** → Run it on **multiple browsers** → Find browser-specific problems.
 
-## Real-world analogy
+For example:
 
-It's like translating one recipe (your test) into three kitchens with
-different stoves (Chromium, Firefox, WebKit) — the steps are identical, but
-each kitchen "executes" them with its own equipment, and occasionally the
-result reveals a difference (a CSS quirk, a timing difference) that only
-shows up on one stove.
+```text
+                    One Test
+                       │
+          ┌────────────┼────────────┐
+          ▼            ▼            ▼
+      Chromium       Firefox       WebKit
+       (Chrome)                    (Safari)
+```
 
-## Why this matters
-
-Bugs that only reproduce on Safari/WebKit are common (date pickers, flexbox
-quirks, video/audio codec support) and are otherwise easy to miss if your
-team only tests on Chrome during development. Running the same suite across
-all three engines catches these before real users do, and it costs you
-almost nothing extra to set up — the projects config handles it.
-
-## Discussion questions
-
-1. If a test passes on `chromium` and `firefox` but fails on `webkit`, what
-   real-world browser's users would be affected?
-2. Why is testing against WebKit useful even for a team that develops
-   entirely on Windows or Linux (where Safari isn't installed)?
+Testing multiple browsers is important because real users may use different browsers. A test passing in Chrome does not always guarantee that the application will work correctly in Firefox or Safari.

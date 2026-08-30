@@ -1,0 +1,1165 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    ```
+    <title>Automation Testing HTML Practice Page</title>
+
+    <meta name="description" content="HTML practice page for beginners learning automation testing">
+    ```
+
+</head>
+
+<body>
+
+    ```
+    <!-- ========================================================= -->
+    <!-- PAGE HEADER                                               -->
+    <!-- ========================================================= -->
+
+    <header id="page-header" data-testid="page-header">
+
+        <h1 id="main-heading" data-testid="main-heading">
+            Automation Testing HTML Practice Page
+        </h1>
+
+        <p id="welcome-message" data-testid="welcome-message">
+            Welcome! This page contains common HTML elements and attributes
+            for automation testing practice.
+        </p>
+
+        <nav id="main-navigation" aria-label="Main Navigation">
+
+            <a id="home-link" href="#home" title="Go to Home section" data-testid="home-link">
+                Home
+            </a>
+
+            |
+
+            <a id="form-link" href="#forms" title="Go to Forms section" data-testid="form-link">
+                Forms
+            </a>
+
+            |
+
+            <a id="table-link" href="#tables" title="Go to Tables section" data-testid="table-link">
+                Tables
+            </a>
+
+            |
+
+            <a id="media-link" href="#media" title="Go to Media section" data-testid="media-link">
+                Media
+            </a>
+
+        </nav>
+
+    </header>
+
+
+    <hr>
+
+
+    <!-- ========================================================= -->
+    <!-- MAIN CONTENT                                              -->
+    <!-- ========================================================= -->
+
+    <main id="main-content">
+
+
+        <!-- ===================================================== -->
+        <!-- HOME / TEXT ELEMENTS                                 -->
+        <!-- ===================================================== -->
+
+        <section id="home" data-testid="home-section">
+
+            <h2>1. Basic HTML Elements</h2>
+
+            <h3>Headings</h3>
+
+            <h1>Heading 1</h1>
+            <h2>Heading 2</h2>
+            <h3>Heading 3</h3>
+            <h4>Heading 4</h4>
+            <h5>Heading 5</h5>
+            <h6>Heading 6</h6>
+
+
+            <h3>Paragraph and Text Formatting</h3>
+
+            <p id="normal-paragraph">
+                This is a normal paragraph used for automation testing practice.
+            </p>
+
+            <p id="formatted-text">
+
+                <strong>Strong text</strong><br>
+
+                <b>Bold text</b><br>
+
+                <em>Emphasized text</em><br>
+
+                <i>Italic text</i><br>
+
+                <u>Underlined text</u><br>
+
+                <mark>Highlighted text</mark><br>
+
+                <small>Small text</small><br>
+
+                <del>Deleted text</del><br>
+
+                <ins>Inserted text</ins><br>
+
+                H<sub>2</sub>O<br>
+
+                X<sup>2</sup><br>
+
+                <code>console.log("Hello");</code>
+
+            </p>
+
+
+            <h3>Quote</h3>
+
+            <blockquote id="sample-quote" cite="https://example.com">
+                Automation testing helps verify that software behaves as expected.
+            </blockquote>
+
+
+            <p>
+                This is an
+                <q id="short-quote">
+                    inline quotation
+                </q>
+                example.
+            </p>
+
+
+            <h3>Abbreviation</h3>
+
+            <p>
+                <abbr id="html-abbreviation" title="HyperText Markup Language">
+                    HTML
+                </abbr>
+                is used to structure web pages.
+            </p>
+
+
+            <h3>Preformatted Text</h3>
+
+            <pre id="preformatted-text" data-testid="preformatted-text">
+```
+
+Test Case: Login
+Username: tester
+Password: password123
+Expected Result: Login successful </pre>
+
+            ```
+        </section>
+
+
+        <hr>
+
+
+        <!-- ===================================================== -->
+        <!-- LISTS                                                  -->
+        <!-- ===================================================== -->
+
+        <section id="lists" data-testid="lists-section">
+
+            <h2>2. Lists</h2>
+
+
+            <h3>Unordered List</h3>
+
+            <ul id="skills-list">
+
+                <li id="skill-html">HTML</li>
+                <li id="skill-css">CSS</li>
+                <li id="skill-javascript">JavaScript</li>
+                <li id="skill-playwright">Playwright</li>
+
+            </ul>
+
+
+            <h3>Ordered List</h3>
+
+            <ol id="testing-steps">
+
+                <li>Open application</li>
+                <li>Enter username</li>
+                <li>Enter password</li>
+                <li>Click Login</li>
+                <li>Verify result</li>
+
+            </ol>
+
+
+            <h3>Description List</h3>
+
+            <dl id="testing-terms">
+
+                <dt>HTML</dt>
+                <dd>Structure of a web page.</dd>
+
+                <dt>Locator</dt>
+                <dd>Used to identify an element.</dd>
+
+                <dt>Assertion</dt>
+                <dd>Used to verify an expected result.</dd>
+
+            </dl>
+
+        </section>
+
+
+        <hr>
+
+
+        <!-- ===================================================== -->
+        <!-- LINKS                                                   -->
+        <!-- ===================================================== -->
+
+        <section id="links" data-testid="links-section">
+
+            <h2>3. Links</h2>
+
+            <p>
+
+                <a id="external-link" href="https://example.com" target="_blank" title="Open Example website"
+                    data-testid="external-link">
+                    External Link
+                </a>
+
+            </p>
+
+            <p>
+
+                <a id="email-link" href="mailto:test@example.com" data-testid="email-link">
+                    Email Link
+                </a>
+
+            </p>
+
+            <p>
+
+                <a id="telephone-link" href="tel:+1234567890" data-testid="telephone-link">
+                    Telephone Link
+                </a>
+
+            </p>
+
+        </section>
+
+
+        <hr>
+
+
+        <!-- ===================================================== -->
+        <!-- FORM                                                   -->
+        <!-- ===================================================== -->
+
+        <section id="forms" data-testid="forms-section">
+
+            <h2>4. Form Elements</h2>
+
+
+            <form id="registration-form" name="registrationForm" action="#" method="post"
+                data-testid="registration-form">
+
+
+                <!-- Text input -->
+
+                <p>
+
+                    <label for="username">
+                        Username:
+                    </label>
+
+                    <input type="text" id="username" name="username" value="" placeholder="Enter username"
+                        title="Username field" autocomplete="username" data-testid="username-input"
+                        aria-label="Username">
+
+                </p>
+
+
+                <!-- Password -->
+
+                <p>
+
+                    <label for="password">
+                        Password:
+                    </label>
+
+                    <input type="password" id="password" name="password" placeholder="Enter password"
+                        title="Password field" autocomplete="current-password" data-testid="password-input"
+                        aria-label="Password">
+
+                </p>
+
+
+                <!-- Email -->
+
+                <p>
+
+                    <label for="email">
+                        Email:
+                    </label>
+
+                    <input type="email" id="email" name="email" placeholder="Enter email" title="Email field"
+                        data-testid="email-input" aria-label="Email">
+
+                </p>
+
+
+                <!-- Number -->
+
+                <p>
+
+                    <label for="age">
+                        Age:
+                    </label>
+
+                    <input type="number" id="age" name="age" min="18" max="60" value="25" data-testid="age-input">
+
+                </p>
+
+
+                <!-- Date -->
+
+                <p>
+
+                    <label for="dob">
+                        Date of Birth:
+                    </label>
+
+                    <input type="date" id="dob" name="dob" data-testid="dob-input">
+
+                </p>
+
+
+                <!-- Time -->
+
+                <p>
+
+                    <label for="appointment-time">
+                        Appointment Time:
+                    </label>
+
+                    <input type="time" id="appointment-time" name="appointmentTime" data-testid="time-input">
+
+                </p>
+
+
+                <!-- Search -->
+
+                <p>
+
+                    <label for="search">
+                        Search:
+                    </label>
+
+                    <input type="search" id="search" name="search" placeholder="Search here" data-testid="search-input">
+
+                </p>
+
+
+                <!-- URL -->
+
+                <p>
+
+                    <label for="website">
+                        Website:
+                    </label>
+
+                    <input type="url" id="website" name="website" placeholder="https://example.com"
+                        data-testid="website-input">
+
+                </p>
+
+
+                <!-- Telephone -->
+
+                <p>
+
+                    <label for="phone">
+                        Phone:
+                    </label>
+
+                    <input type="tel" id="phone" name="phone" placeholder="Enter phone number"
+                        data-testid="phone-input">
+
+                </p>
+
+
+                <!-- Radio buttons -->
+
+                <fieldset id="gender-fieldset" data-testid="gender-fieldset">
+
+                    <legend>Gender</legend>
+
+                    <input type="radio" id="male" name="gender" value="male" data-testid="male-radio">
+
+                    <label for="male">Male</label>
+
+
+                    <input type="radio" id="female" name="gender" value="female" data-testid="female-radio">
+
+                    <label for="female">Female</label>
+
+
+                    <input type="radio" id="other" name="gender" value="other" data-testid="other-radio">
+
+                    <label for="other">Other</label>
+
+                </fieldset>
+
+
+                <!-- Checkboxes -->
+
+                <fieldset id="skills-fieldset" data-testid="skills-fieldset">
+
+                    <legend>Skills</legend>
+
+                    <input type="checkbox" id="html" name="skills" value="html" checked data-testid="html-checkbox">
+
+                    <label for="html">HTML</label>
+
+
+                    <input type="checkbox" id="javascript" name="skills" value="javascript"
+                        data-testid="javascript-checkbox">
+
+                    <label for="javascript">JavaScript</label>
+
+
+                    <input type="checkbox" id="playwright" name="skills" value="playwright"
+                        data-testid="playwright-checkbox">
+
+                    <label for="playwright">Playwright</label>
+
+                </fieldset>
+
+
+                <!-- Select dropdown -->
+
+                <p>
+
+                    <label for="browser">
+                        Preferred Browser:
+                    </label>
+
+                    <select id="browser" name="browser" title="Select browser" data-testid="browser-select"
+                        aria-label="Preferred browser">
+
+                        <option value="" disabled selected>
+                            Select Browser
+                        </option>
+
+                        <option value="chrome" data-testid="chrome-option">
+                            Chrome
+                        </option>
+
+                        <option value="firefox" data-testid="firefox-option">
+                            Firefox
+                        </option>
+
+                        <option value="webkit" data-testid="webkit-option">
+                            WebKit
+                        </option>
+
+                    </select>
+
+                </p>
+
+
+                <!-- Multiple select -->
+
+                <p>
+
+                    <label for="languages">
+                        Programming Languages:
+                    </label>
+
+                    <select id="languages" name="languages" multiple size="4" data-testid="languages-select">
+
+                        <option value="javascript">
+                            JavaScript
+                        </option>
+
+                        <option value="typescript">
+                            TypeScript
+                        </option>
+
+                        <option value="java">
+                            Java
+                        </option>
+
+                        <option value="python">
+                            Python
+                        </option>
+
+                    </select>
+
+                </p>
+
+
+                <!-- Textarea -->
+
+                <p>
+
+                    <label for="comments">
+                        Comments:
+                    </label>
+
+                    <br>
+
+                    <textarea id="comments" name="comments" rows="5" cols="40" placeholder="Enter your comments"
+                        data-testid="comments-textarea"></textarea>
+
+                </p>
+
+
+                <!-- Range -->
+
+                <p>
+
+                    <label for="experience">
+                        Experience Level:
+                    </label>
+
+                    <input type="range" id="experience" name="experience" min="1" max="10" value="5"
+                        data-testid="experience-range">
+
+                </p>
+
+
+                <!-- Color -->
+
+                <p>
+
+                    <label for="favorite-color">
+                        Favorite Color:
+                    </label>
+
+                    <input type="color" id="favorite-color" name="favoriteColor" value="#000000"
+                        data-testid="color-input">
+
+                </p>
+
+
+                <!-- File -->
+
+                <p>
+
+                    <label for="resume">
+                        Upload Resume:
+                    </label>
+
+                    <input type="file" id="resume" name="resume" accept=".pdf,.doc,.docx" data-testid="resume-upload">
+
+                </p>
+
+
+                <!-- Hidden field -->
+
+                <input type="hidden" id="user-id" name="userId" value="TEST-001" data-testid="hidden-user-id">
+
+
+                <!-- Disabled input -->
+
+                <p>
+
+                    <label for="disabled-input">
+                        Disabled Field:
+                    </label>
+
+                    <input type="text" id="disabled-input" name="disabledInput" value="Cannot edit" disabled
+                        data-testid="disabled-input">
+
+                </p>
+
+
+                <!-- Readonly input -->
+
+                <p>
+
+                    <label for="readonly-input">
+                        Readonly Field:
+                    </label>
+
+                    <input type="text" id="readonly-input" name="readonlyInput" value="Read only value" readonly
+                        data-testid="readonly-input">
+
+                </p>
+
+
+                <!-- Buttons -->
+
+                <p>
+
+                    <button type="button" id="normal-button" name="normalButton" title="Normal button"
+                        data-testid="normal-button" aria-label="Normal Button">
+                        Normal Button
+                    </button>
+
+
+                    <button type="submit" id="submit-button" name="submitButton" data-testid="submit-button">
+                        Submit
+                    </button>
+
+
+                    <button type="reset" id="reset-button" name="resetButton" data-testid="reset-button">
+                        Reset
+                    </button>
+
+                </p>
+
+
+            </form>
+
+        </section>
+
+
+        <hr>
+
+
+        <!-- ===================================================== -->
+        <!-- TABLE                                                   -->
+        <!-- ===================================================== -->
+
+        <section id="tables" data-testid="tables-section">
+
+            <h2>5. Table</h2>
+
+            <table id="employee-table" border="1" data-testid="employee-table">
+
+                <caption>
+                    Employee Test Data
+                </caption>
+
+                <thead>
+
+                    <tr>
+
+                        <th id="header-id" scope="col">
+                            ID
+                        </th>
+
+                        <th id="header-name" scope="col">
+                            Name
+                        </th>
+
+                        <th id="header-role" scope="col">
+                            Role
+                        </th>
+
+                        <th id="header-status" scope="col">
+                            Status
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr id="employee-101" data-testid="employee-row-101">
+
+                        <td>101</td>
+                        <td>Asha</td>
+                        <td>Automation Tester</td>
+
+                        <td data-testid="status-active">
+                            Active
+                        </td>
+
+                    </tr>
+
+
+                    <tr id="employee-102" data-testid="employee-row-102">
+
+                        <td>102</td>
+                        <td>Rahul</td>
+                        <td>Developer</td>
+
+                        <td data-testid="status-active">
+                            Active
+                        </td>
+
+                    </tr>
+
+
+                    <tr id="employee-103" data-testid="employee-row-103">
+
+                        <td>103</td>
+                        <td>Priya</td>
+                        <td>QA Engineer</td>
+
+                        <td data-testid="status-inactive">
+                            Inactive
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+
+                <tfoot>
+
+                    <tr>
+
+                        <td colspan="4">
+                            Total Employees: 3
+                        </td>
+
+                    </tr>
+
+                </tfoot>
+
+            </table>
+
+        </section>
+
+
+        <hr>
+
+
+        <!-- ===================================================== -->
+        <!-- IMAGE AND FIGURE                                      -->
+        <!-- ===================================================== -->
+
+        <section id="media" data-testid="media-section">
+
+            <h2>6. Images and Figures</h2>
+
+            <figure id="testing-figure" data-testid="testing-figure">
+
+                <img id="sample-image" src="https://via.placeholder.com/300x150" alt="Sample automation testing image"
+                    width="300" height="150" title="Sample Image" data-testid="sample-image">
+
+                <figcaption>
+                    Sample image used for automation testing.
+                </figcaption>
+
+            </figure>
+
+        </section>
+
+
+        <hr>
+
+
+        <!-- ===================================================== -->
+        <!-- AUDIO                                                   -->
+        <!-- ===================================================== -->
+
+        <section id="audio-section" data-testid="audio-section">
+
+            <h2>7. Audio</h2>
+
+            <audio id="sample-audio" controls data-testid="sample-audio">
+
+                <source src="sample-audio.mp3" type="audio/mpeg">
+
+                Your browser does not support audio.
+
+            </audio>
+
+        </section>
+
+
+        <hr>
+
+
+        <!-- ===================================================== -->
+        <!-- VIDEO                                                   -->
+        <!-- ===================================================== -->
+
+        <section id="video-section" data-testid="video-section">
+
+            <h2>8. Video</h2>
+
+            <video id="sample-video" width="320" height="180" controls data-testid="sample-video">
+
+                <source src="sample-video.mp4" type="video/mp4">
+
+                Your browser does not support video.
+
+            </video>
+
+        </section>
+
+
+        <hr>
+
+
+        <!-- ===================================================== -->
+        <!-- DETAILS / SUMMARY                                     -->
+        <!-- ===================================================== -->
+
+        <section id="details-section" data-testid="details-section">
+
+            <h2>9. Details and Summary</h2>
+
+            <details id="automation-details" data-testid="automation-details">
+
+                <summary id="automation-summary">
+                    What is Automation Testing?
+                </summary>
+
+                <p>
+                    Automation testing uses tools and scripts to execute
+                    test cases automatically and verify application behavior.
+                </p>
+
+            </details>
+
+        </section>
+
+
+        <hr>
+
+
+        <!-- ===================================================== -->
+        <!-- PROGRESS AND METER                                    -->
+        <!-- ===================================================== -->
+
+        <section id="progress-section" data-testid="progress-section">
+
+            <h2>10. Progress and Meter</h2>
+
+            <p>
+                Test Execution Progress:
+            </p>
+
+            <progress id="test-progress" value="70" max="100" data-testid="test-progress">
+                70%
+            </progress>
+
+
+            <p>
+                System Health:
+            </p>
+
+            <meter id="system-health" value="0.8" min="0" max="1" data-testid="system-health">
+                80%
+            </meter>
+
+        </section>
+
+
+        <hr>
+
+
+        <!-- ===================================================== -->
+        <!-- IFRAME                                                 -->
+        <!-- ===================================================== -->
+
+        <section id="iframe-section" data-testid="iframe-section">
+
+            <h2>11. Iframe</h2>
+
+            <iframe id="sample-iframe" name="sampleFrame" srcdoc="
+                <html>
+                    <body>
+                        <h3 id='iframe-heading'>Inside Iframe</h3>
+                        <p id='iframe-message'>This content is inside an iframe.</p>
+                        <button id='iframe-button'>Iframe Button</button>
+                    </body>
+                </html>
+            " width="400" height="180" title="Sample Automation Iframe" data-testid="sample-iframe">
+            </iframe>
+
+        </section>
+
+
+        <hr>
+
+
+        <!-- ===================================================== -->
+        <!-- DIV AND SPAN                                          -->
+        <!-- ===================================================== -->
+
+        <section id="container-section" data-testid="container-section">
+
+            <h2>12. Div and Span</h2>
+
+            <div id="user-container" class="user-container" data-testid="user-container">
+
+                <p>
+                    User Name:
+                    <span id="display-name" class="username" data-testid="display-name">
+                        Automation Tester
+                    </span>
+                </p>
+
+                <p>
+                    Status:
+                    <span id="display-status" class="status" data-testid="display-status">
+                        Active
+                    </span>
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <hr>
+
+
+        <!-- ===================================================== -->
+        <!-- SEMANTIC ELEMENTS                                    -->
+        <!-- ===================================================== -->
+
+        <article id="sample-article" data-testid="sample-article">
+
+            <h2>13. Article</h2>
+
+            <p>
+                This is an article element.
+            </p>
+
+        </article>
+
+
+        <aside id="sample-aside" data-testid="sample-aside">
+
+            <h2>14. Aside</h2>
+
+            <p>
+                This is additional information inside an aside element.
+            </p>
+
+        </aside>
+
+
+        <hr>
+
+
+        <!-- ===================================================== -->
+        <!-- COMMON AUTOMATION ATTRIBUTES                          -->
+        <!-- ===================================================== -->
+
+        <section id="attributes-section" data-testid="attributes-section">
+
+            <h2>15. Common Automation Attributes</h2>
+
+            <p>
+                The following elements demonstrate attributes commonly
+                used by automation testers.
+            </p>
+
+
+            <button id="attribute-button" class="primary-button" name="attributeButton" value="click-me"
+                title="Attribute demonstration button" role="button" aria-label="Attribute Demo Button"
+                data-testid="attribute-demo-button" data-test="demo-button" data-cy="demo-button">
+                Attribute Demo Button
+            </button>
+
+
+            <p id="attribute-description" class="description" title="Description text"
+                data-testid="attribute-description">
+                This element contains multiple attributes useful for
+                locator practice.
+            </p>
+
+        </section>
+
+
+        <hr>
+
+
+        <!-- ===================================================== -->
+        <!-- DISABLED / READONLY / REQUIRED                       -->
+        <!-- ===================================================== -->
+
+        <section id="validation-section" data-testid="validation-section">
+
+            <h2>16. Form Validation Attributes</h2>
+
+            <form id="validation-form" data-testid="validation-form">
+
+                <p>
+
+                    <label for="required-field">
+                        Required Field:
+                    </label>
+
+                    <input type="text" id="required-field" name="requiredField" required
+                        placeholder="This field is required" data-testid="required-field">
+
+                </p>
+
+
+                <p>
+
+                    <label for="min-length-field">
+                        Minimum Length:
+                    </label>
+
+                    <input type="text" id="min-length-field" name="minLengthField" minlength="5" maxlength="20"
+                        placeholder="Minimum 5 characters" data-testid="min-length-field">
+
+                </p>
+
+
+                <p>
+
+                    <label for="pattern-field">
+                        Pattern:
+                    </label>
+
+                    <input type="text" id="pattern-field" name="patternField" pattern="[A-Za-z]+"
+                        placeholder="Letters only" data-testid="pattern-field">
+
+                </p>
+
+            </form>
+
+        </section>
+
+
+        <hr>
+
+
+        <!-- ===================================================== -->
+        <!-- OUTPUT                                                -->
+        <!-- ===================================================== -->
+
+        <section id="output-section" data-testid="output-section">
+
+            <h2>17. Output</h2>
+
+            <label for="calculation">
+                Test Result:
+            </label>
+
+            <output id="calculation" name="calculation" data-testid="test-output">
+                PASS
+            </output>
+
+        </section>
+
+
+        <hr>
+
+
+        <!-- ===================================================== -->
+        <!-- DIALOG                                                -->
+        <!-- ===================================================== -->
+
+        <section id="dialog-section" data-testid="dialog-section">
+
+            <h2>18. Dialog</h2>
+
+            <dialog id="sample-dialog" open data-testid="sample-dialog">
+
+                <p>
+                    This is a dialog element.
+                </p>
+
+                <button id="dialog-button" type="button" data-testid="dialog-button">
+                    Dialog Button
+                </button>
+
+            </dialog>
+
+        </section>
+
+
+        <hr>
+
+
+        <!-- ===================================================== -->
+        <!-- AUTOMATION PRACTICE AREA                              -->
+        <!-- ===================================================== -->
+
+        <section id="practice-area" data-testid="practice-area">
+
+            <h2>19. Automation Practice Area</h2>
+
+            <p>
+                Use the elements below to practice writing locators.
+            </p>
+
+
+            <button id="practice-button" data-testid="practice-button">
+                Practice Button
+            </button>
+
+
+            <input type="text" id="practice-input" name="practiceInput" placeholder="Practice input"
+                data-testid="practice-input">
+
+
+            <select id="practice-dropdown" name="practiceDropdown" data-testid="practice-dropdown">
+
+                <option value="one">
+                    Option One
+                </option>
+
+                <option value="two">
+                    Option Two
+                </option>
+
+                <option value="three">
+                    Option Three
+                </option>
+
+            </select>
+
+
+            <input type="checkbox" id="practice-checkbox" name="practiceCheckbox" data-testid="practice-checkbox">
+
+            <label for="practice-checkbox">
+                Practice Checkbox
+            </label>
+
+
+            <input type="radio" id="practice-radio" name="practiceRadio" value="practice" data-testid="practice-radio">
+
+            <label for="practice-radio">
+                Practice Radio
+            </label>
+
+        </section>
+
+    </main>
+
+
+    <hr>
+
+
+    <!-- ========================================================= -->
+    <!-- FOOTER                                                    -->
+    <!-- ========================================================= -->
+
+    <footer id="page-footer" data-testid="page-footer">
+
+        <p>
+            Automation Testing Practice Page
+        </p>
+
+        <p>
+            &copy; 2026 Automation Training
+        </p>
+
+        <address id="contact-address">
+            Contact:
+            <a href="mailto:test@example.com" data-testid="contact-email">
+                test@example.com
+            </a>
+        </address>
+
+    </footer>
+    ```
+
+</body>
+
+</html>

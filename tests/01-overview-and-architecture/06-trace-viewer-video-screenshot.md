@@ -1,56 +1,49 @@
-# 6. Trace Viewer, Video, and Screenshot Capture — Architecture Under the Hood
+# Screenshot, Video and Trace Configuration
+### Screenshot
+* `screenshot: 'off'` → Do not take screenshots.
+* `screenshot: 'on'` → Take a screenshot for every test.
+* `screenshot: 'only-on-failure'` → Take a screenshot only when a test fails.
 
-## What's going on
+### Video
+* `video: 'off'` → Do not record videos.
+* `video: 'on'` → Record video for every test.
+* `video: 'on-first-retry'` → Record video when a failed test is retried for the first time.
+* `video: 'retain-on-failure'` → Record video and keep it only when the test fails.
 
-When a test fails, "it failed" isn't very useful on its own — you want to see
-*what the page looked like* and *what happened step by step*. Playwright can
-capture three kinds of after-the-fact evidence, each recorded differently:
+### Trace
+* `trace: 'off'` → Do not record traces.
+* `trace: 'on'` → Record a trace for every test.
+* `trace: 'on-first-retry'` → Record a trace when a failed test is retried for the first time.
+* `trace: 'retain-on-failure'` → Record a trace and keep it only when the test fails.
 
-- **Screenshot**: a single image taken at a moment in time (e.g. on failure).
-  Cheap — just one frame.
-- **Video**: the browser's tab is recorded frame-by-frame for the whole test
-  run, saved as a `.webm` file. More expensive than a screenshot, but shows
-  motion/timing.
-- **Trace**: the richest option. While the test runs, Playwright records a
-  timeline of every action, every network request/response, console logs,
-  DOM snapshots before/after each step, and screenshots — all bundled into a
-  single `.zip` trace file. Opening it in the **Trace Viewer**
-  (`npx playwright show-trace trace.zip`) gives you a scrubbable, DevTools-like
-  time machine for the entire test.
+### Where to Configure
+File: **`playwright.config.ts`**
+typescript code:
+use: {
+  screenshot: 'only-on-failure',
+  video: 'on-first-retry',
+  trace: 'on-first-retry',
+},
 
-Under the hood, tracing works by hooking into the same CDP/protocol layer
-described in [sub-topic 1](01-playwright-architecture.md) — every command
-Playwright sends to the browser, and every response, can be logged as it
-happens, which is why the trace can reconstruct DOM state at each step
-without re-running the test.
+### Where Are the Files Stored?
+After the test runs, screenshots, videos, and traces are stored inside the **`test-results`** folder.
+test-results/
+    └── test-name/
+        ├── screenshot.png
+        ├── video.webm
+        └── trace.zip
 
-## Real-world analogy
+### How to Open a Trace
 
-A screenshot is a photo. A video is CCTV footage. A trace is more like a
-flight recorder ("black box") — it doesn't just show you what things looked
-like, it also logs every instrument reading (network calls, console output,
-timing) so you can reconstruct exactly what the system was doing at any
-instant.
+Run: npx playwright show-trace path/to/trace.zip
 
-## Comparison
+Example:
+npx playwright show-trace test-results/example-test/trace.zip
 
-| Capture type | Cost | What you get |
-|---|---|---|
-| Screenshot | Very low | One image |
-| Video | Medium | Full playback of the tab |
-| Trace | Higher, but usually only `on-first-retry` | Timeline + DOM snapshots + network + console, viewable in Trace Viewer |
-
-## Why it matters
-
-In CI, a flaky test that fails once in a hundred runs is nearly impossible to
-debug from logs alone. Because tracing can be configured to only activate
-`on-first-retry` (the project's default, see `playwright.config.ts`), you get
-this rich debugging data exactly when you need it — on failure — without
-paying the recording cost on every single passing run.
-
-## Discussion questions
-
-1. Why might a team choose `trace: 'on-first-retry'` instead of `trace: 'on'`
-   (always recording) for a large CI suite?
-2. If you only had a screenshot of a failed test (no trace, no video), what
-   information would you be missing that a trace would have given you?
+### Recommended Beginner Configuration
+use: {
+  screenshot: 'only-on-failure',
+  video: 'on-first-retry',
+  trace: 'on-first-retry',
+},
+**Simple idea:** Screenshot gives a **picture**, video gives a **recording**, and trace gives **detailed information for debugging**.

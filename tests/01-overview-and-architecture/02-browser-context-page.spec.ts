@@ -1,56 +1,48 @@
-import { test, expect, chromium } from '@playwright/test';
+import { test, expect } from '@playwright/test';
 
-/**
- * 2. Browser, BrowserContext, and Page — isolated session architecture
- *
- * - Browser: one running browser process (e.g. one Chromium instance).
- * - BrowserContext: an isolated "incognito-like" session inside that browser —
- *   its own cookies, storage, and cache. Cheap to create, so Playwright Test
- *   gives every test a fresh context automatically.
- * - Page: a single tab/window living inside a context.
- *
- * This is WHY tests don't leak state into each other: each test gets its own
- * context, so logging in / setting a cookie in one test never affects another.
- */
+test.describe('Playwright Fixtures', () => {
 
-test.describe('02 - Browser, BrowserContext, and Page isolation', () => {
-  test('each test gets its own isolated context automatically', async ({ page, context }) => {
-    // `page` and `context` are provided as fixtures by the Playwright Test
-    // Runner — a brand new BrowserContext + Page, created just for this test.
+  test('Using page fixture', async ({ page }) => {
+
+    // page represents one browser tab
+
     await page.goto('https://demo.playwright.dev/todomvc');
 
-    // Prove the context starts with no stored state: no cookies yet.
-    const cookiesBefore = await context.cookies();
-    expect(cookiesBefore.length).toBe(0);
-
-    // localStorage lives on the page's origin, scoped to this context only.
-    await page.evaluate(() => localStorage.setItem('trainee', 'hello'));
-    const value = await page.evaluate(() => localStorage.getItem('trainee'));
-    expect(value).toBe('hello');
+    await expect(page).toHaveTitle(/TodoMVC/);
   });
 
-  test('two contexts in the same browser do not share storage', async () => {
-    // Here we manage the Browser/Context/Page layers manually to make the
-    // isolation visible, instead of relying on the test/page fixtures.
-    const browser = await chromium.launch();
+  test('Using context fixture', async ({ page, context }) => {
 
-    const contextA = await browser.newContext();
-    const pageA = await contextA.newPage();
-    await pageA.goto('https://demo.playwright.dev/todomvc');
-    await pageA.evaluate(() => localStorage.setItem('user', 'alice'));
+    // page = browser tab
+    // context = browser session
 
-    const contextB = await browser.newContext();
-    const pageB = await contextB.newPage();
-    await pageB.goto('https://demo.playwright.dev/todomvc');
-    const userInB = await pageB.evaluate(() => localStorage.getItem('user'));
+    await page.goto('https://demo.playwright.dev/todomvc');
 
-    // contextB never saw contextA's localStorage — separate sessions,
-    // same underlying Browser process.
-    expect(userInB).toBeNull();
-
-    await browser.close();
+    // Check that the page belongs to this context
+    expect(page.context()).toBe(context);
   });
+
+  test('Using browser fixture', async ({ page, browser }) => {
+
+    // browser = browser instance
+    // page = browser tab
+
+    await page.goto('https://demo.playwright.dev/todomvc');
+
+    await expect(page).toHaveTitle(/TodoMVCc/);
+  });
+
+  test('Using page and context together', async ({ page, context }) => {
+
+    await page.goto('https://demo.playwright.dev/todomvc');
+
+    // Create another tab in the same context
+    const secondPage = await context.newPage();
+
+    await secondPage.goto('https://demo.playwright.dev/todomvc');
+
+    // There are now 2 pages/tabs in this context
+    expect(context.pages().length).toBe(2);
+  });
+
 });
-
-// Mini-exercise: open two pages inside the SAME context (context.newPage()
-// twice) and confirm they DO share localStorage, unlike two separate contexts.

@@ -1,58 +1,42 @@
-# 1. Browser, BrowserContext, and Page Objects — Lifecycle and Relationship in Tests
+# Browser → BrowserContext → Page: Lifecycle
 
-## What's going on
+## How it works
 
-You already saw in Topic 1 that Browser → BrowserContext → Page is a
-containment hierarchy. This sub-topic is about *when* each one is actually
-created and destroyed while your test suite runs — because that timing is
-what makes Playwright Test both fast and safe from state leaking between
-tests.
+When you run `npx playwright test`:
 
-By default, when you run `npx playwright test`:
+* **Browser** → Usually launched **once per worker** and reused by its tests.
+* **BrowserContext** → A **new context is created for each test** and destroyed after the test.
+* **Page** → Created inside the context; Playwright's `page` fixture provides it automatically.
 
-- One **Browser** process is launched **per worker process** (Playwright
-  Test runs multiple workers in parallel — see
-  [sub-topic 5](05-parallelism-workers.md)), and is reused across every test
-  that worker executes. Launching a browser process is the slow part, so
-  reusing it saves time.
-- A brand new **BrowserContext** is created **before every single test**, and
-  destroyed **after that test finishes** — this is what the `context` and
-  `page` fixtures hand you. This is why cookies, localStorage, or a logged-in
-  session from one test never bleed into the next.
-- A **Page** is created inside that fresh context (the `page` fixture opens
-  one for you automatically).
+Worker
+└── Browser (reused)
+    ├── Context → Test A → destroyed
+    │   └── Page
+    ├── Context → Test B → destroyed
+    │   └── Page
+    └── ...
 
-```
-Worker process
- └── Browser (launched once, reused)
-      ├── BrowserContext  (created for Test A, destroyed after Test A)
-      │     └── Page
-      ├── BrowserContext  (created for Test B, destroyed after Test B)
-      │     └── Page
-      └── ...
+## Easy analogy
+
+* 🏨 **Browser** = Hotel building
+* 🚪 **BrowserContext** = Fresh hotel room for each test
+* 👤 **Page** = Guest using the room
+A new context prevents **cookies, localStorage, and login sessions** from leaking between tests.
+## Important
+Avoid manually creating extra contexts unless you need them:
+```typescript
+const context = await browser.newContext();
 ```
 
-## Real-world analogy
+Normally, use Playwright's built-in `page` fixture:
 
-The Browser is like a hotel building that stays open all week (expensive to
-construct, so you don't rebuild it for every guest). Each BrowserContext is
-like a hotel room freshly cleaned and reset before every new guest (test)
-checks in — no belongings (cookies/storage) left behind by the previous
-guest. The Page is the guest actually using the room.
+```typescript
+test('example', async ({ page }) => {
+    // page already belongs to a fresh context
+});
+```
 
-## Why it matters
+## Quick Questions
 
-If you ever manually create extra `browser.newContext()` calls or reuse a
-`page` across what should be independent tests, you break this isolation
-guarantee and can get flaky, order-dependent test failures. Understanding
-"one browser, many disposable contexts" is the mental model that explains
-why Playwright tests are both fast (browser reuse) and reliable (context
-isolation) at the same time.
-
-## Discussion questions
-
-1. Why is a fresh BrowserContext per test cheaper than launching a fresh
-   Browser per test?
-2. If a test manually calls `browser.newContext()` a second time inside
-   itself, how many contexts now exist for that one test, and what could go
-   wrong?
+1. Why is reusing the Browser faster than launching one for every test?
+2. If you call `browser.newContext()` inside a test, what happens to the number of contexts?

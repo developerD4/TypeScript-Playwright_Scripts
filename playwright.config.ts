@@ -31,6 +31,7 @@ export default defineConfig({
    * https://playwright.dev/docs/test-reporters and topic 10,
    * "Reporting, Debugging & Failure Analysis", file 01, for what each
    * option below does and how to customize it further. */
+  retries: 3,
   reporter: [
     ['list'], // concise pass/fail lines streamed to the terminal as tests run
     ['html', { outputFolder: 'playwright-report', open: 'never' }], // rich report — `npx playwright show-report` to view
@@ -54,10 +55,12 @@ export default defineConfig({
   },
 
   /* Configure projects for major browsers */
+  // "browser name,viewport size,user agent,device scale factor,other device-related settings"
+
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      use: { ...devices['Desktop'] },
     },
 
     {
