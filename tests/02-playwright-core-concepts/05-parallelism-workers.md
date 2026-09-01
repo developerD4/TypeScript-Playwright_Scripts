@@ -1,56 +1,125 @@
-# 5. Parallelism & Workers Configuration for Faster Execution
+# 5. Parallelism & Workers Configuration
 
-## What's going on
+## 1. Parallel Execution
 
-Running hundreds of tests one after another would be slow. Playwright Test
-runs multiple **workers** — separate processes, each with its own Browser
-instance — in parallel, spreading your test files across them.
+Normally, tests run **one after another**, which can be slow for a large test suite.
 
-Relevant `playwright.config.ts` settings (already present in this project):
+Playwright can run independent tests **at the same time using workers**, making execution faster.
 
-- `fullyParallel: true` — run individual TESTS in parallel, not just test
-  FILES. Without this, tests within one file run sequentially even if
-  multiple workers are available.
-- `workers` — how many worker processes to run at once. Locally this
-  defaults to roughly half your CPU cores; on CI it's often explicitly set
-  lower (`workers: process.env.CI ? 1 : undefined`) because CI machines
-  often have fewer usable cores and shared resources.
-- `retries` — how many times a FAILED test is re-run (each retry happens in
-  a fresh context) before being marked as truly failed — helps absorb
-  occasional flakiness without slowing down every run.
+```text
+Without parallel:
+Test 1 → Test 2 → Test 3 → Test 4
 
-Tests in the SAME file, by default, run in the same worker unless
-`fullyParallel` is on — because Playwright assumes tests in one file might
-share `describe.serial` ordering or file-scoped state, and only parallelizes
-further when you tell it that's safe.
+With parallel:
+Worker 1 → Test 1
+Worker 2 → Test 2
+Worker 3 → Test 3
+Worker 4 → Test 4
+```
 
-## Real-world analogy
+---
 
-Think of workers like checkout lanes at a supermarket. More open lanes
-(workers) means the whole line of customers (tests) gets through faster —
-but if you open more lanes than you have cashiers (CPU cores) for, each lane
-actually slows down because they're fighting over the same resources.
+## 2. `workers`
 
-## Comparison
+`workers` defines **how many tests can run at the same time**.
 
-| Setting | Effect | Typical local value | Typical CI value |
-|---|---|---|---|
-| `workers` | # parallel processes | auto (≈ half your cores) | often `1` or a fixed small number |
-| `fullyParallel` | parallelize within a file too | `true` | `true` |
-| `retries` | re-attempts on failure | `0` | `2` (absorbs CI flakiness) |
+```typescript
+workers: 4
+```
 
-## Why it matters
+Means Playwright can use up to **4 workers**.
 
-A slow test suite discourages developers from running it locally before
-pushing, and a flaky suite erodes trust in CI. Tuning `workers`/`retries`
-correctly is often the single biggest lever for "does the team actually
-trust and use this test suite," separate from how well any individual test
-is written.
+**Remember:** Workers = number of parallel test workers.
 
-## Discussion questions
+---
 
-1. Why might a CI machine be configured with `workers: 1` even though the
-   local dev machine uses several?
-2. If a test relies on `describe.serial` ordering (each test depends on the
-   previous one's state), is that test a good candidate for
-   `fullyParallel`? Why or why not?
+## 3. `fullyParallel`
+
+```typescript
+fullyParallel: true
+```
+
+Allows independent tests **within the same file** to run in parallel.
+
+Tests should be independent and should not depend on another test's result or data.
+
+---
+
+## 4. `retries`
+
+```typescript
+retries: 2
+```
+
+Tells Playwright to **retry a failed test up to 2 times**.
+
+```text
+Test → ❌ Failed
+Retry 1 → ❌ Failed
+Retry 2 → ✅ Passed
+```
+
+Useful for occasional failures caused by temporary network, application, or environment issues.
+
+**Do not use retries to hide a test that always fails.**
+
+---
+
+## 5. CI — Continuous Integration
+
+**CI = Continuous Integration**
+
+CI automatically builds and tests code when developers push code or create a pull request.
+
+Examples: GitHub Actions, Jenkins, GitLab CI, Azure DevOps.
+
+### CI-specific configuration
+
+```typescript
+retries: process.env.CI ? 2 : 0,
+workers: process.env.CI ? 1 : undefined,
+```
+
+**Retries:** CI → retry 2 times; Local → no retry.
+
+**Workers:** CI → use 1 worker; Local → Playwright chooses automatically.
+
+Fewer workers on CI can reduce resource usage and make execution more stable.
+
+---
+
+## 6. Simple Configuration
+
+```typescript
+export default defineConfig({
+  fullyParallel: true,
+  workers: 4,
+  retries: 2,
+});
+```
+
+---
+
+## 7. Notes — 3 Lines
+
+**Workers:** How many tests run at the same time.
+**`fullyParallel`:** Allows independent tests in the same file to run together.
+**`retries`:** Runs a failed test again.
+
+---
+
+## 8. Test Scenarios — 3 Lines
+
+**Scenario 1:** Run a large regression suite faster using multiple workers.
+**Scenario 2:** Run independent tests in the same file in parallel.
+**Scenario 3:** Retry tests that occasionally fail because of temporary issues.
+
+---
+
+## 9. Use Cases — 3 Lines
+
+**Use Case 1:** Faster execution of hundreds of regression tests.
+**Use Case 2:** Run independent login, search, and product tests simultaneously.
+**Use Case 3:** Keep CI test execution stable using limited workers and retries.
+
+**Important:** Parallel tests should be **independent**.

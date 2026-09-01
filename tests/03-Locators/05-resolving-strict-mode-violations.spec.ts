@@ -1,6 +1,5 @@
 import { test, expect } from '@playwright/test';
 
-
 test.beforeEach(async ({ page }) => {
 
   // Open SauceDemo
@@ -14,22 +13,17 @@ test.beforeEach(async ({ page }) => {
   await expect(page).toHaveURL(/inventory.html/);
 });
 
-
 test('Strict mode problem - multiple elements found', async ({ page }) => {
 
   // There are 6 Add to Cart buttons
   const buttons = page.getByRole('button', { name: 'Add to cart' });
-
   // Verify that 6 buttons exist
   await expect(buttons).toHaveCount(6);
-
   // Clicking all 6 at once causes a strict mode error
   await expect(buttons.click()).rejects.toThrow();
 });
 
-
 test('Fix - find the correct product using filter()', async ({ page }) => {
-
   // Find the Backpack product
   const backpack = page
     .locator('[data-test="inventory-item"]')

@@ -18,7 +18,6 @@ test.describe('Network Interception', () => {
     expect(requestCount).toBeGreaterThan(0);
   });
 
-
   test('Block network requests using route.abort()', async ({ page }) => {
 
     // Block JavaScript files

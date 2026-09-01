@@ -2,13 +2,12 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Test Annotations', () => {
 
-  // 1. test.skip()
-  test('Skip this test on WebKit', async ({ page, browserName }) => {
+  // 1. Skip a test
+  test('Skip test on WebKit', async ({ page, browserName }) => {
 
-    // Skip this test only when running in WebKit
     test.skip(
       browserName === 'webkit',
-      'This test is not supported in WebKit'
+      'Not supported in WebKit'
     );
 
     await page.goto('https://demo.playwright.dev/todomvc');
@@ -19,13 +18,12 @@ test.describe('Test Annotations', () => {
   });
 
 
-  // 2. test.fixme()
+  // 2. Mark a test as known broken
   test('Known broken test', async ({ page }) => {
 
-    // Use fixme when the test is currently broken
     test.fixme(
       true,
-      'This feature is currently broken and needs to be fixed'
+      'Feature is currently broken'
     );
 
     await page.goto('https://demo.playwright.dev/todomvc');
@@ -34,10 +32,9 @@ test.describe('Test Annotations', () => {
   });
 
 
-  // 3. test.slow()
+  // 3. Give extra time to a slow test
   test('Slow test', async ({ page }) => {
 
-    // Give this test more time to complete
     test.slow();
 
     await page.goto('https://demo.playwright.dev/todomvc');
@@ -53,12 +50,11 @@ test.describe('Test Annotations', () => {
   });
 
 
-  // 4. test.only()
-  // Use this temporarily when debugging one test.
+  // 4. Run only this test
+  // Use only temporarily while debugging
 
   // test.only('Run only this test', async ({ page }) => {
   //   await page.goto('https://demo.playwright.dev/todomvc');
-  //   await expect(page).toHaveURL(/todomvc/);
   // });
 
 });
