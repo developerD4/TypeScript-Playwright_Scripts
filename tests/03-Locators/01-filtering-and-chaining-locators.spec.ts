@@ -1,97 +1,55 @@
 import { test, expect } from '@playwright/test';
-
 test.beforeEach(async ({ page }) => {
-
-  // Open SauceDemo
-  await page.goto('https://www.saucedemo.com');
-
+  // Open OrangeHRM
+  await page.goto('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login');
   // Login
-  await page.locator('#user-name').fill('standard_user');
-  await page.locator('#password').fill('secret_sauce');
-  await page.locator('#login-button').click();
-
+  await page.locator('input[name="username"]').fill('Admin');
+  await page.locator('input[name="password"]').fill('admin123');
+  await page.getByRole('button', { name: 'Login' }).click();
   // Verify login
-  await expect(page).toHaveURL(/inventory.html/);
+  await expect(page).toHaveURL(/dashboard/);
 });
-
-
-test('Find a product using its name', async ({ page }) => {
-
-  // Find the product card by product name
-  const product = page
-    .locator('.inventory_item')
-    .filter({ hasText: 'Sauce Labs Backpack' });
-
-  // Verify that the product was found
-  await expect(product).toHaveCount(1);
-
-  // Click Add to Cart inside that product
-  await product.getByRole('button', { name: 'Add to cart' }).click();
-
-  // Verify product was added
+test('Find an element using its text', async ({ page }) => {
+  // Find the Dashboard menu
+  const dashboard = page.getByText('Dashboard', { exact: true }); //exact: true makes a text locator more specific.
+  // Verify Dashboard is visible
+  await expect(dashboard).toBeVisible();
+});
+test('Find a menu item using an element inside it', async ({ page }) => {
+  // Find the menu item containing the text "PIM"
+  const menuItem = page
+    .locator('.oxd-main-menu-item')
+    .filter({ hasText: 'PIM' }); //filter() reduces multiple matching elements.
+  // Verify that the menu item was found
+  await expect(menuItem).toHaveCount(1);
+  // Click PIM
+  await menuItem.click();
+  // Verify PIM page
+  await expect(page).toHaveURL(/pim/);
+});
+test('Find an element inside the main menu', async ({ page }) => {
+  // Find the main menu
+  const menu = page.locator('.oxd-sidepanel');
+  // Find PIM only inside the menu
+  const pimMenu = menu.getByText('PIM', { exact: true }); //getByText() finds an element by its text content.
+  // Verify PIM is visible
+  await expect(pimMenu).toBeVisible();
+  // Click PIM
+  await pimMenu.click();
+  // Verify PIM page is opened
+  await expect(page).toHaveURL(/pim/);
+});
+test('Find employee section and open it', async ({ page }) => {
+  // Find PIM menu
+  const pim = page
+    .locator('.oxd-main-menu-item')
+    .filter({ hasText: 'PIM' });
+  // Verify PIM menu is available
+  await expect(pim).toHaveCount(1);
+  // Click PIM
+  await pim.click();
+  // Verify Employee Information section
   await expect(
-    product.getByRole('button', { name: 'Remove' })
+    page.getByText('Employee Information', { exact: true })
   ).toBeVisible();
-});
-
-
-test('Find a product using an element inside it', async ({ page }) => {
-
-  // Find the product card containing the Add to Cart button
-  const product = page
-    .locator('.inventory_item')
-    .filter({
-      has: page.locator(
-        '[data-test="add-to-cart-sauce-labs-bike-light"]'
-      )
-    });
-
-  // Verify the product name
-  await expect(
-    product.locator('.inventory_item_name')
-  ).toHaveText('Sauce Labs Bike Light');
-});
-
-
-test('Find an element inside the shopping cart', async ({ page }) => {
-
-  // Add Backpack to cart
-  await page
-    .locator('[data-test="add-to-cart-sauce-labs-backpack"]')
-    .click();
-
-  // Open shopping cart
-  await page.locator('.shopping_cart_link').click();
-
-  // Find the cart section
-  const cart = page.locator('.cart_list');
-
-  // Find Remove button only inside the cart
-  const removeButton = cart.getByRole('button', { name: 'Remove' });
-
-  // Verify Remove button is available
-  await expect(removeButton).toBeVisible();
-
-  // Remove the product
-  await removeButton.click();
-
-  // Verify product was removed
-  await expect(removeButton).not.toBeVisible();
-});
-
-
-test('Find product and add it to cart', async ({ page }) => {
-
-  // Find the product by its name
-  const product = page
-    .locator('.inventory_item')
-    .filter({ hasText: 'Sauce Labs Onesie' });
-
-  // Click Add to Cart inside the product
-  await product.getByRole('button', { name: 'Add to cart' }).click();
-
-  // Verify cart count
-  await expect(
-    page.locator('.shopping_cart_badge')
-  ).toHaveText('1');
 });

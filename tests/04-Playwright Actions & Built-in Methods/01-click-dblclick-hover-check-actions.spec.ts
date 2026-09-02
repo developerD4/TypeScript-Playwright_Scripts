@@ -11,12 +11,10 @@ test('Click an element', async ({ page }) => {
 
   await input.fill('Buy milk');
   await input.press('Enter');
-
   // Find the checkbox for Buy milk
   const checkbox = page
     .locator('li', { hasText: 'Buy milk' })
     .getByRole('checkbox');
-
   // Click the checkbox
   await checkbox.click();
 
@@ -25,8 +23,6 @@ test('Click an element', async ({ page }) => {
     page.locator('li', { hasText: 'Buy milk' })
   ).toHaveClass(/completed/);
 });
-
-
 // -------------------- DOUBLE CLICK --------------------
 
 test('Double-click an element', async ({ page }) => {
