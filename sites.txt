@@ -1,33 +1,14 @@
-**1. Playwright's own demo site**
-- `https://demo.playwright.dev/todomvc` — official Playwright TodoMVC demo, great for learning basic actions (add, complete, delete todos, filters)
+Working urls:
+https://demo.playwright.dev/todomvc
+https://opensource-demo.orangehrmlive.com/web/index.php/auth/login
+https://playwrightlab.github.io
+https://the-internet.herokuapp.com - But some of the pages is not Working.
 
-**2. The Internet (Herokuapp)**
-- `https://the-internet.herokuapp.com` — a huge collection of tricky UI scenarios in one place: dropdowns, alerts, iframes, drag-and-drop, file uploads, dynamic loading, hidden elements, broken images, etc. Extremely popular for automation practice.
-
-**3. SauceDemo**
-- `https://www.saucedemo.com` — a fake e-commerce site made specifically for Selenium/Playwright practice. Login flows, product listing, cart, checkout — good for building a realistic end-to-end test suite. Has standard/locked/problem user accounts to test different behaviors.
-
-**4. Automation Exercise**
-- `https://automationexercise.com` — full e-commerce site (signup, login, product search, cart, checkout, contact forms) with a published API too, good once you want to mix UI + API testing.
-
-**5. ParaBank**
-- `https://parabank.parasoft.com` — simulated banking app (account creation, transfers, bill pay, transaction history). Good for more complex, multi-step form flows.
-
-**6. Practice Automation Testing**
-- `https://practice.automationtesting.in` — WordPress-style shop site with checkboxes, radio buttons, dropdowns, sliders, multi-window/tab handling.
-
-**7. DemoQA**
-- `https://demoqa.com` — great for widgets: date pickers, sliders, drag-drop, tables, modals, tabs, file upload/download.
-
-**8. UI Testing Playground**
-- `http://uitestingplayground.com` — deliberately tricky scenarios: elements that load with delay, overlapping elements, animated buttons, AJAX data. Excellent for learning waits and Playwright's auto-waiting behavior.
+Not Working urls:
+https://www.saucedemo.com
+https://practice.expandtesting.com/shadowdom
 
 
-| Stage | Site | Focus |
-|---|---|---|
-| 1 | Playwright TodoMVC demo | Basic locators, actions, assertions |
-| 2 | SauceDemo | Login, POM (Page Object Model), e2e flow |
-| 3 | The Internet (Herokuapp) | Alerts, iframes, drag-drop, uploads |
-| 4 | UI Testing Playground | Waits, flaky elements, timing issues |
-| 5 | Automation Exercise | Full e2e + API testing combined |
-| 6 | ParaBank | Complex multi-step forms, data-driven tests |
+Useful vs code shortcuts:
+Ctrl + ~ => Open terminal
+Alt + Z => wrap long code lines so they stay visible within the VS Code window

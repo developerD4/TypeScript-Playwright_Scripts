@@ -1,60 +1,63 @@
 import { test, expect } from '@playwright/test';
 
+test.describe('Dynamic Elements', () => {
+  test('Handle delayed content', async ({ page }) => {
+    await page.goto('https://playwrightlab.github.io/');
+    // Select a delay
+    await page.getByRole('button', { name: 'Load Content' }).click();
+    // Wait for 3 seconds
+    await page.waitForTimeout(3000);
+    // Verify the content
+    await expect(
+      page.getByText('Content Loaded Successfully!')
+    ).toBeVisible({ timeout: 10000 });
+  });
+  test('Handle show and hide element', async ({ page }) => {
+    await page.goto('https://playwrightlab.github.io/');
+    // Show the element
+    await page.getByRole('button', { name: 'Show Element' }).click();
+    // Wait for the UI to change
+    await page.waitForTimeout(1000);
+    await expect(
+      page.getByText("I'm visible!")
+    ).toBeVisible({ timeout: 10000 });
+    // Hide the element
+    await page.getByRole('button', { name: 'Hide Element' }).click();
+    await page.waitForTimeout(1000);
+    await expect(
+      page.getByText("I'm visible!")
+    ).not.toBeVisible({ timeout: 10000 });
+  });
 
-test('Handle an element that appears after loading', async ({ page }) => {
+  test('Handle disabled and enabled input', async ({ page }) => {
 
-  await page.goto(
-    'https://the-internet.herokuapp.com/dynamic_loading/1'
-  );
+    await page.goto('https://playwrightlab.github.io/');
 
-  // Click Start
-  await page.getByRole('button', { name: 'Start' }).click();
+    const input = page.getByPlaceholder('Type here...');
 
-  // Playwright waits automatically for the text to appear
-  await expect(
-    page.locator('#finish')
-  ).toHaveText('Hello World!', { timeout: 10000 });
+    // Disable the input
+    await page.getByRole('button', { name: 'Disable Input' }).click();
+
+    await page.waitForTimeout(500);
+
+    await expect(input).toBeDisabled({ timeout: 10000 });
+
+    // Enable the input
+    await page.getByRole('button', { name: 'Enable Input' }).click();
+
+    await page.waitForTimeout(500);
+
+    await expect(input).toBeEnabled({ timeout: 10000 });
+
+    await input.fill('Hello Playwright');
+
+    await expect(input).toHaveValue('Hello Playwright', {
+      timeout: 10000
+    });
+  });
+
 });
 
-
-test('Handle an element added to the page later', async ({ page }) => {
-
-  await page.goto(
-    'https://the-internet.herokuapp.com/dynamic_loading/2'
-  );
-
-  // Click Start
-  await page.getByRole('button', { name: 'Start' }).click();
-
-  // Playwright waits until the element appears
-  await expect(
-    page.locator('#finish')
-  ).toBeVisible({ timeout: 10000 });
-});
-
-
-test('Handle dynamic IDs using a stable pattern', async ({ page }) => {
-
-  await page.goto('https://www.saucedemo.com');
-
-  // Login
-  await page.locator('#user-name').fill('standard_user');
-  await page.locator('#password').fill('secret_sauce');
-  await page.locator('#login-button').click();
-
-  // Find an Add to Cart button using a common ID pattern
-  const addButton = page
-    .locator('[id^="add-to-cart-"]')
-    .first();
-
-  // Verify and click the button
-  await expect(addButton).toBeVisible();
-  await addButton.click();
-
-  // Verify that the button changed to Remove
-  const removeButton = page
-    .locator('[id^="remove-"]')
-    .first();
-
-  await expect(removeButton).toBeVisible();
-});
+// ID starts with "input-" → page.locator('[id^="input-"]'); — Finds elements whose ID starts with input-.
+// ID ends with "-input" → page.locator('[id$="-input"]'); — Finds elements whose ID ends with -input.
+// ID contains "input" → page.locator('[id*="input"]'); — Finds elements whose ID contains input anywhere.
