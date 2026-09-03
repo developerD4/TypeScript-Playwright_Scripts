@@ -12,3 +12,5 @@ https://practice.expandtesting.com/shadowdom
 Useful vs code shortcuts:
 Ctrl + ~ => Open terminal
 Alt + Z => wrap long code lines so they stay visible within the VS Code window
+Ctrl + Shift + A => Open Copilot
+Ctrl + Shift + L → Selects all occurrences of the selected word.
