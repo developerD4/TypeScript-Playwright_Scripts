@@ -1,22 +1,18 @@
 import { test, expect } from '@playwright/test';
 
-
 // -------------------- fill() --------------------
 
 test('Enter text using fill()', async ({ page }) => {
 
-  await page.goto('https://www.saucedemo.com');
+  await page.goto('https://opensource-demo.orangehrmlive.com');
 
   // Enter username and password
-  await page.locator('#user-name').fill('standard_user');
-  await page.locator('#password').fill('secret_sauce');
+  await page.getByPlaceholder('Username').fill('Admin');
+  await page.getByPlaceholder('Password').fill('admin123');
 
-  // Verify the entered values
-  await expect(page.locator('#user-name'))
-    .toHaveValue('standard_user');
-
-  await expect(page.locator('#password'))
-    .toHaveValue('secret_sauce');
+  // Verify entered values
+  await expect(page.getByPlaceholder('Username')).toHaveValue('Admin');
+  await expect(page.getByPlaceholder('Password')).toHaveValue('admin123');
 });
 
 
@@ -24,18 +20,15 @@ test('Enter text using fill()', async ({ page }) => {
 
 test('Type text character by character', async ({ page }) => {
 
-  await page.goto('https://www.saucedemo.com');
+  await page.goto('https://opensource-demo.orangehrmlive.com');
 
-  const username = page.locator('#user-name');
+  // Type username one character at a time
+  await page.getByPlaceholder('Username')
+    .pressSequentially('Admin');
 
-  // Types one character at a time
-  await username.pressSequentially('standard_user', {
-    delay: 50
-  });
-
-  // Verify the text
-  await expect(username)
-    .toHaveValue('standard_user');
+  // Verify entered value
+  await expect(page.getByPlaceholder('Username'))
+    .toHaveValue('Admin');
 });
 
 
@@ -43,33 +36,33 @@ test('Type text character by character', async ({ page }) => {
 
 test('Press a keyboard key', async ({ page }) => {
 
-  await page.goto('https://www.saucedemo.com');
+  await page.goto('https://opensource-demo.orangehrmlive.com');
 
-  await page.locator('#user-name').fill('standard_user');
-  await page.locator('#password').fill('secret_sauce');
+  await page.getByPlaceholder('Username').fill('Admin');
+  await page.getByPlaceholder('Password').fill('admin123');
 
-  // Press Enter to submit the login form
-  await page.locator('#password').press('Enter');
+  // Press Enter to login
+  await page.getByPlaceholder('Password').press('Enter');
 
   // Verify login
-  await expect(page).toHaveURL(/inventory.html/);
+  await expect(page).toHaveURL(/dashboard/);
 });
 
 
-// -------------------- Keyboard Shortcuts --------------------
+// -------------------- Keyboard Shortcut --------------------
 
-test('Use keyboard shortcuts', async ({ page }) => {
+test('Use keyboard shortcut', async ({ page }) => {
 
-  await page.goto('https://www.saucedemo.com');
+  await page.goto('https://opensource-demo.orangehrmlive.com');
 
-  const username = page.locator('#user-name');
+  const username = page.getByPlaceholder('Username');
 
-  await username.fill('standard_user');
+  await username.fill('Admin');
 
   // Select all text
   await username.press('Control+A');
 
-  // Delete selected text
+  // Delete the selected text
   await username.press('Backspace');
 
   // Verify field is empty

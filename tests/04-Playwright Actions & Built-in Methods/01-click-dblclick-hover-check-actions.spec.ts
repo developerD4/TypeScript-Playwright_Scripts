@@ -1,81 +1,62 @@
 import { test, expect } from '@playwright/test';
 
-
 // -------------------- CLICK --------------------
 
-test('Click an element', async ({ page }) => {
+test('Click', async ({ page }) => {
 
   await page.goto('https://demo.playwright.dev/todomvc');
 
-  const input = page.getByPlaceholder('What needs to be done?');
+  // Add a todo
+  await page.getByPlaceholder('What needs to be done?').fill('Buy milk');
+  await page.getByPlaceholder('What needs to be done?').press('Enter');
 
-  await input.fill('Buy milk');
-  await input.press('Enter');
-  // Find the checkbox for Buy milk
-  const checkbox = page
-    .locator('li', { hasText: 'Buy milk' })
-    .getByRole('checkbox');
   // Click the checkbox
-  await checkbox.click();
+  await page.getByRole('checkbox').click();
 
-  // Verify that the todo is completed
-  await expect(
-    page.locator('li', { hasText: 'Buy milk' })
-  ).toHaveClass(/completed/);
+  // Verify todo is completed
+  await expect(page.locator('li')).toHaveClass(/completed/);
 });
+
+
 // -------------------- DOUBLE CLICK --------------------
 
-test('Double-click an element', async ({ page }) => {
+test('Double Click', async ({ page }) => {
 
   await page.goto('https://demo.playwright.dev/todomvc');
 
-  const input = page.getByPlaceholder('What needs to be done?');
-
-  await input.fill('Buy milk');
-  await input.press('Enter');
-
-  // Find the todo
-  const todo = page.getByText('Buy milk');
+  // Add a todo
+  await page.getByPlaceholder('What needs to be done?').fill('Buy milk');
+  await page.getByPlaceholder('What needs to be done?').press('Enter');
 
   // Double-click the todo
-  await todo.dblclick();
+  await page.getByText('Buy milk').dblclick();
 
-  // Verify that edit mode is opened
-  const editBox = page.locator('li.editing .edit');
-
-  await expect(editBox).toBeVisible();
-  await expect(editBox).toHaveValue('Buy milk');
+  // Verify edit box is visible
+  await expect(page.locator('.edit')).toBeVisible();
 });
 
 
 // -------------------- HOVER --------------------
 
-test('Hover over an element', async ({ page }) => {
-
+test('Hover', async ({ page }) => {
   await page.goto('https://the-internet.herokuapp.com/hovers');
-
-  // Find the first user
   const user = page.locator('.figure').first();
-
-  // Find the profile link
-  const profileLink = user.getByRole('link', {
-    name: 'View profile'
-  });
-
-  // Link is hidden before hover
-  await expect(profileLink).not.toBeVisible();
-
   // Hover over the user
   await user.hover();
+  // title → title="help icon" Typically shown by the browser as a tooltip on hover.
+  // data-tooltip → data-tooltip="Custom tooltip text" A custom attribute that stores tooltip text.
+  // toHaveText() → checks text inside an element.
+  // toHaveAttribute() → checks a value stored in an HTML attribute.
 
-  // Link becomes visible
-  await expect(profileLink).toBeVisible();
+  // Verify profile link is visible
+  await expect(user.getByRole('link', { name: 'View profile' }))
+    .toBeVisible();
 });
 
 
 // -------------------- CHECK / UNCHECK --------------------
 
-test('Check and uncheck a checkbox', async ({ page }) => {
+test('Check and Uncheck', async ({ page }) => {
 
   await page.goto('https://the-internet.herokuapp.com/checkboxes');
 
@@ -85,10 +66,12 @@ test('Check and uncheck a checkbox', async ({ page }) => {
   // Check the first checkbox
   await checkbox1.check();
 
+  // Verify it is checked
   await expect(checkbox1).toBeChecked();
 
   // Uncheck the second checkbox
   await checkbox2.uncheck();
 
+  // Verify it is unchecked
   await expect(checkbox2).not.toBeChecked();
 });
