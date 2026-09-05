@@ -1,82 +1,102 @@
-// 01-web-first-assertions.spec.ts
-//
-// TOPIC: web-first assertions — toBeVisible, toHaveText, toHaveValue,
-// toBeEnabled, and friends
-//
-// Site used: https://www.saucedemo.com (see sites.txt #3)
-//
-// "Web-first" means these assertions know how to wait for the browser
-// themselves: expect(locator).toBeVisible() doesn't just check the DOM
-// once, it polls the page until the condition is true (or the timeout
-// runs out). That's what makes them the right default over reading a
-// value once with a plain `expect(await locator.textContent())...`.
-
 import { test, expect } from '@playwright/test';
 
+// ==================== OPEN WEBSITE ====================
+
 test.beforeEach(async ({ page }) => {
-  await page.goto('https://www.saucedemo.com');
+
+  await page.goto('https://playwrightlab.github.io/');
 });
 
-test('toBeVisible / not.toBeVisible — element presence on screen', async ({ page }) => {
-  await expect(page.locator('.login_logo')).toBeVisible();
-  await expect(page.locator('.error-message-container h3')).not.toBeVisible();
+// ==================== toBeVisible() ====================
+
+test('Check element visibility', async ({ page }) => {
+
+  const heading = page.getByRole('heading').first();
+
+  // Verify the element is visible
+  await expect(heading).toBeVisible();
 });
 
-test('toHaveText / toContainText — exact vs partial text', async ({ page }) => {
-  // toHaveText requires the FULL text to match (whitespace-trimmed).
-  await expect(page.locator('.login_logo')).toHaveText('Swag Labs');
+// ==================== toHaveText() ====================
 
-  // toContainText only checks that the given text appears somewhere inside.
-  await expect(page.locator('.login_credentials')).toContainText('standard_user');
+test('Check element text', async ({ page }) => {
+
+  const heading = page.getByRole('heading').first();
+
+  // Verify the complete text
+  await expect(heading).toHaveText('Playwright Lab');
 });
 
-test('toHaveValue — current value of an input field', async ({ page }) => {
-  const usernameField = page.locator('#user-name');
+// ==================== toContainText() ====================
 
-  await expect(usernameField).toHaveValue('');
-  await usernameField.fill('standard_user');
-  await expect(usernameField).toHaveValue('standard_user');
+test('Check partial text', async ({ page }) => {
+
+  const body = page.locator('body');
+
+  // Verify that the page contains the given text
+  await expect(body).toContainText('Playwright');
 });
 
-test('toBeEnabled / toBeDisabled — interactive state of an element', async ({ page }) => {
-  const loginButton = page.locator('#login-button');
+// ==================== toHaveValue() ====================
 
-  // The Login button on SauceDemo is always clickable, even with empty
-  // fields (it shows a validation error instead) — this checks that.
-  await expect(loginButton).toBeEnabled();
+test('Check input value', async ({ page }) => {
 
-  await page.locator('#user-name').fill('locked_out_user');
-  await page.locator('#password').fill('secret_sauce');
-  await loginButton.click();
+  const input = page.locator('input').first();
 
-  // A locked-out user gets an error message instead of navigating away.
-  await expect(page.locator('[data-test="error"]')).toBeVisible();
-  await expect(page.locator('[data-test="error"]')).toContainText('locked out');
+  // Enter text
+  await input.fill('Hello');
+
+  // Verify entered value
+  await expect(input).toHaveValue('Hello');
 });
 
-test('toHaveCount — number of matching elements', async ({ page }) => {
-  await page.locator('#user-name').fill('standard_user');
-  await page.locator('#password').fill('secret_sauce');
-  await page.locator('#login-button').click();
+// ==================== toBeEnabled() / toBeDisabled() ====================
 
-  await expect(page).toHaveURL(/inventory\.html/);
-  await expect(page.locator('.inventory_item')).toHaveCount(6);
+test('Check element state', async ({ page }) => {
+
+  const button = page.getByRole('button').first();
+
+  // Verify button is enabled
+  await expect(button).toBeEnabled();
 });
 
-test('toHaveAttribute / toHaveClass — element attributes and CSS classes', async ({ page }) => {
-  const usernameField = page.locator('#user-name');
+// ==================== toHaveCount() ====================
 
-  await expect(usernameField).toHaveAttribute('placeholder', 'Username');
+test('Check number of elements', async ({ page }) => {
 
-  await page.locator('#user-name').fill('standard_user');
-  await page.locator('#password').fill('secret_sauce');
-  await page.locator('#login-button').click();
+  const buttons = page.getByRole('button');
 
-  const cartBadgeParent = page.locator('.shopping_cart_link');
-  await expect(cartBadgeParent).toHaveClass(/shopping_cart_link/);
+  // Verify number of buttons
+  await expect(buttons).toHaveCount(3);
 });
 
-test('toHaveURL / toHaveTitle — page-level assertions, not element-level', async ({ page }) => {
-  await expect(page).toHaveTitle('Swag Labs');
-  await expect(page).toHaveURL('https://www.saucedemo.com/');
+// ==================== toHaveAttribute() ====================
+
+test('Check element attribute', async ({ page }) => {
+
+  const input = page.locator('input').first();
+
+  // Verify an attribute
+  await expect(input).toHaveAttribute('type', 'text');
+});
+
+// ==================== toHaveClass() ====================
+
+test('Check element class', async ({ page }) => {
+
+  const heading = page.getByRole('heading').first();
+
+  // Verify CSS class
+  await expect(heading).toHaveClass(/./);
+});
+
+// ==================== toHaveURL() / toHaveTitle() ====================
+
+test('Check page URL and title', async ({ page }) => {
+
+  // Verify URL
+  await expect(page).toHaveURL('https://playwrightlab.github.io/');
+
+  // Verify page title
+  await expect(page).toHaveTitle(/Playwright/);
 });

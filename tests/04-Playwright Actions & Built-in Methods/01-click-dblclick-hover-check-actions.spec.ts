@@ -5,36 +5,28 @@ import { test, expect } from '@playwright/test';
 test('Click', async ({ page }) => {
 
   await page.goto('https://demo.playwright.dev/todomvc');
-
   // Add a todo
   await page.getByPlaceholder('What needs to be done?').fill('Buy milk');
   await page.getByPlaceholder('What needs to be done?').press('Enter');
-
   // Click the checkbox
   await page.getByRole('checkbox').click();
-
   // Verify todo is completed
   await expect(page.locator('li')).toHaveClass(/completed/);
 });
-
 
 // -------------------- DOUBLE CLICK --------------------
 
 test('Double Click', async ({ page }) => {
 
   await page.goto('https://demo.playwright.dev/todomvc');
-
   // Add a todo
   await page.getByPlaceholder('What needs to be done?').fill('Buy milk');
   await page.getByPlaceholder('What needs to be done?').press('Enter');
-
   // Double-click the todo
   await page.getByText('Buy milk').dblclick();
-
   // Verify edit box is visible
   await expect(page.locator('.edit')).toBeVisible();
 });
-
 
 // -------------------- HOVER --------------------
 
@@ -53,25 +45,19 @@ test('Hover', async ({ page }) => {
     .toBeVisible();
 });
 
-
 // -------------------- CHECK / UNCHECK --------------------
 
 test('Check and Uncheck', async ({ page }) => {
 
   await page.goto('https://the-internet.herokuapp.com/checkboxes');
-
   const checkbox1 = page.locator('#checkboxes input').nth(0);
   const checkbox2 = page.locator('#checkboxes input').nth(1);
-
   // Check the first checkbox
   await checkbox1.check();
-
   // Verify it is checked
   await expect(checkbox1).toBeChecked();
-
   // Uncheck the second checkbox
   await checkbox2.uncheck();
-
   // Verify it is unchecked
   await expect(checkbox2).not.toBeChecked();
 });

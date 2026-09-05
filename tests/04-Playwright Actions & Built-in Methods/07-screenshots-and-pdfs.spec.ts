@@ -35,6 +35,7 @@ test('Take screenshot of an element', async ({ page }) => {
 test('Save page as PDF', async ({ page, browserName }) => {
 
   // PDF works only with Chromium
+  //Run the PDF test only in Chromium; skip it in Firefox and WebKit.
   test.skip(browserName !== 'chromium');
 
   await page.goto('https://demo.playwright.dev/todomvc');
@@ -45,3 +46,11 @@ test('Save page as PDF', async ({ page, browserName }) => {
     format: 'A4'
   });
 });
+
+// Firefox and WebKit: Playwright does not provide page.pdf() support for these browser engines.
+// Chromium: page.pdf() uses Chromium's built-in PDF generation capability and is supported in headless Chromium.
+// page.pdf() works in Chromium when Chromium is running in headless mode.
+//Chromium headless has a built-in mechanism that Playwright can use to directly generate a PDF, 
+// whereas Firefox/WebKit don't expose the equivalent Playwright API.
+//Also, headed Chromium is different because Playwright's page.pdf() is designed for Chromium's   headless PDF-generation path, 
+// not for controlling the visible browser's Print dialog.
