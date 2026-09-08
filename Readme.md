@@ -154,3 +154,5 @@ export default {
 | Run multiple files | `npx playwright test file1.js file2.js` |
 | Run and watch browser | `npx playwright test path/to/file.js --headed` |
 | Run step-by-step (debug) | `npx playwright test path/to/file.js --debug` |
+| Run particular test | `npx playwright test -g "Store and read localStorage" --headed` |
+| Run particular browser & workers | `npx playwright test "tests/05-Assertions & Validations/05-visual-regression-toHaveScreenshot.spec.ts" --project=chromium --workers=1 --update-snapshots`|

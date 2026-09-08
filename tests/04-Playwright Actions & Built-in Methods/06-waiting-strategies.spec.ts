@@ -43,6 +43,7 @@ test('Wait for page to load', async ({ page }) => {
 
   // Wait until network activity becomes idle
   await page.waitForLoadState('networkidle');
+  // await page.waitForLoadState('networkidle', { timeout: 10000 });
 
   // Verify page is ready
   await expect(

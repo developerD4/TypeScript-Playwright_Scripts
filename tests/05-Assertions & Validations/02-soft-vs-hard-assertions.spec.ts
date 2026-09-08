@@ -14,7 +14,6 @@ test('Hard assertion', async ({ page }) => {
   await expect(page).toHaveURL('https://playwrightlab.github.io/');
 });
 
-
 // ==================== SOFT ASSERTION ====================
 
 test('Soft assertion', async ({ page }) => {

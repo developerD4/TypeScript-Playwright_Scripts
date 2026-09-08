@@ -12,9 +12,7 @@ test('Wait for text to appear', async ({ page }) => {
 
   // Playwright keeps checking until the text appears
   await expect(page.locator('#finish'))
-    .toHaveText('Hello World!', {
-      timeout: 10000
-    });
+    .toHaveText('Hello World!', { timeout: 10000 });
 });
 
 // ==================== ELEMENT CREATED LATER ====================
@@ -29,9 +27,7 @@ test('Wait for element that appears later', async ({ page }) => {
 
   // The element is created after a few seconds
   // toBeVisible() automatically waits for it
-  await expect(page.locator('#finish')).toBeVisible({
-    timeout: 10000
-  });
+  await expect(page.locator('#finish')).toBeVisible({ timeout: 10000 });
 
   await expect(page.locator('#finish'))
     .toHaveText('Hello World!');
