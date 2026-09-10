@@ -10,7 +10,6 @@ Not Working urls:
 https://www.saucedemo.com
 https://practice.expandtesting.com/shadowdom
 
-
 Useful vs code shortcuts:
 Ctrl + ~ => Open terminal
 Alt + Z => wrap long code lines so they stay visible within the VS Code window

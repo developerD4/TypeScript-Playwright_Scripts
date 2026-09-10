@@ -24,3 +24,4 @@ test('Check element screenshot', async ({ page }) => {
   // Take screenshot of only this element
   await expect(heading).toHaveScreenshot('heading.png');
 });
+//npx playwright test ./tests/Assertion-validation/05-visual-regression-toHaveScreenshot.spec.ts --update-snapshots --headed
