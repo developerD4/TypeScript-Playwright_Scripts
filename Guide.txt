@@ -1,0 +1,43 @@
+1. npm install dotenv ==> Definition: dotenv loads values from .env files into process.env.
+
+2. This is only to demonstrate environment switching. In a real project, QA and Staging would normally have different URLs.
+
+3. $env:TEST_ENV="qa" → Selects the environment for the current terminal session.
+npx playwright test → Starts the Playwright test execution.
+
+4. Environment (env) → An environment is a setup where our application and tests run, such as QA, Staging, or Production.
+.env file → A .env file stores environment-specific values such as URLs, usernames, and configuration settings outside the test code.
+dotenv → dotenv is an npm package that reads values from a .env file and makes them available through process.env.
+
+| Folder        | One-line definition                                                          |
+| ------------- | ---------------------------------------------------------------------------- |
+| **tests**     | Contains the **actual test cases and test scenarios**.                       |
+| **pages**     | Contains **page classes with locators and page actions**.                    |
+| **core**      | Contains **common framework-level functionality** used across the project.   |
+| **factory**   | Contains **logic for creating and providing required objects or test data**. |
+| **utils**     | Contains **reusable helper functions** for common tasks.                     |
+| **config**    | Contains **environment and framework configuration settings**.               |
+| **report**    | Contains **test execution reports and reporting-related files**.             |
+| **test-data** | Contains **input data required by test cases**.                              |
+| **fixtures**  | Contains **common test setup and reusable test resources**.                  |
+
+
+//Logger is a reusable way to record information, warnings, or errors during execution.
+//A wrapper is a reusable function that adds common behavior around an existing action.
+//A data factory is a reusable function that creates test data when needed.
+//Global setup runs once before the complete test run, while global teardown runs once after it finishes.
+
+Logger
+→ Records execution information
+
+Wrapper
+→ Adds common behavior to an action
+
+Factory
+→ Creates reusable test data
+
+Global Setup
+→ Runs once before all tests
+
+Global Teardown
+→ Runs once after all tests

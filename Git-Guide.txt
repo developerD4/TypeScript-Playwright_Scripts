@@ -1,0 +1,9 @@
+1. git status -> Tracked and untracked files -> 
+2. git remote -v -> Show git initialize place whether in local or github. If it's local only: The command will return nothing or an empty result, meaning no remote GitHub repository is linked yet. If it's linked to GitHub: It will display the remote fetch and push URLs pointing to your GitHub repository (e.g., [https://github.com/username/repo-name.git](https://github.com/username/repo-name.git)).
+
+3. git remote add origin https://github.com/your-username/your-repo-name.git -> Link Local Repository to GitHub.
+4. git branch -M main -> Renames your current local branch to main (the -M flag forces the rename).
+5. git push -u origin main -> Uploads your local commits to the remote repository (origin) and links your local branch to the remote branch (-u sets up upstream tracking, so future updates only require typing git push).
+https://github.com/developerD4/TypeScript-Playwright_Scripts.git
+
+6. git checkout -b feature-branch or git switch -c feature-branch -> Create and Switch to a New Branch
