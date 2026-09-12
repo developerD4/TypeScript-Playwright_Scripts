@@ -11,7 +11,8 @@
     "strict": true,
     "isolatedModules": true,
     "skipLibCheck": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    // "verbatimModuleSyntax":false
   },
   "include": [
     "framework/**/*.ts",
@@ -19,3 +20,7 @@
     "playwright.config.ts"
   ]
 }
+// step 1 - npx tsc --init
+// step 2 - Enable "types": ["node"], under target in tsconfig.json
+// step 3 - comment "verbatimModuleSyntax":false
+// step 4 - npm i --save-dev @types/node
