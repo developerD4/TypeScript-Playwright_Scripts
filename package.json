@@ -11,16 +11,23 @@
     "report": "playwright show-report",
     "typecheck": "tsc --noEmit"
   },
-  "keywords": ["playwright", "training", "typescript"],
+  "keywords": [
+    "playwright",
+    "training",
+    "typescript"
+  ],
   "author": "",
   "license": "ISC",
   "description": "",
   "devDependencies": {
+    "@faker-js/faker": "^10.6.0",
     "@playwright/test": "^1.63.0",
     "@types/node": "^26.5.0",
     "cross-env": "^7.0.3"
   },
   "dependencies": {
-    "dotenv": "^17.4.2"
+    "csv-parse": "^7.0.2",
+    "dotenv": "^17.4.2",
+    "xlsx": "^0.18.5"
   }
 }

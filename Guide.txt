@@ -41,3 +41,25 @@ Global Setup
 
 Global Teardown
 → Runs once after all tests
+
+Faker:
+Faker is a JavaScript/TypeScript library used to generate realistic and random test data such as names, emails, phone numbers, and addresses.
+To install - npm install --save-dev @faker-js/faker
+To check - npm list @faker-js/faker
+To use - import { faker } from '@faker-js/faker';
+
+//csv
+To install - npm install csv-parse
+
+//Excel
+TO install - npm install xlsx
+
+//check my TypeScript code for errors, but don't create JavaScript files.
+npx        → runs the TypeScript compiler from your project
+tsc        → TypeScript compiler
+--noEmit   → check the code, but don't generate .js files
+//npm audit
+
+//new Date().toISOString() is a built‑in JavaScript method (fully supported in TypeScript)
+// that converts a Date object into a UTC ISO‑8601 formatted string like:
+//2026-08-26T06:47:12.345Z
