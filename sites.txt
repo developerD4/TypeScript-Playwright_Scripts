@@ -5,6 +5,9 @@ https://opensource-demo.orangehrmlive.com/web/index.php/dashboard/index
 https://playwrightlab.github.io
 https://the-internet.herokuapp.com - But some of the pages is not Working.
 https://demowebshop.tricentis.com/
+https://demo.guru99.com/
+User ID :	mngr666295
+Password :	ygAbYnu
 
 Not Working urls:
 https://www.saucedemo.com

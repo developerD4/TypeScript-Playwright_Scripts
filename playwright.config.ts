@@ -19,8 +19,8 @@ export default defineConfig({
    * and framework/global-teardown.ts (topic: Framework Development &
    * Reusable Utilities). These also load the env-specific .env file via
    * framework/config/env.ts, since it's imported from global-setup.ts. */
-  globalSetup: require.resolve('./framework/global-setup'),
-  globalTeardown: require.resolve('./framework/global-teardown'),
+  // globalSetup: require.resolve('./framework/global-setup'),
+  // globalTeardown: require.resolve('./framework/global-teardown'),
   // /* Fail the build on CI if you accidentally left test.only in the source code. */
   // forbidOnly: !!process.env.CI,
   // /* Retry on CI only */

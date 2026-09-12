@@ -1,58 +1,40 @@
-// db/fakeDb.ts
-//
-// A tiny in-memory stand-in for a real database client (e.g. `pg` for
-// Postgres, `mysql2`, `mongodb`), so the seeding/cleanup PATTERN in
-// 04-database-seeding-and-cleanup.spec.ts is runnable without needing an
-// actual database server running. Every method below has a comment
-// showing the real SQL you'd write against an actual database — swap this
-// module for a real client in a real project; the pattern in the spec
-// file stays the same either way.
-//
-// NOTE: this Map lives in ONE Node.js process's memory. A real database
-// is a separate, shared server that every parallel test worker connects
-// to — see 07-test-data-isolation-in-parallel-execution.spec.ts for why
-// that distinction matters for how you seed/clean up against a real one.
-
 import { randomUUID } from 'crypto';
-
-export interface DbUser {
+//crypto is a built-in Node.js module that provides functions for generating secure random values, hashes, UUIDs, and encryption-related operations.
+export interface User {
   id: string;
   username: string;
   email: string;
 }
-
-const usersTable = new Map<string, DbUser>();
-
+// Temporary in-memory database
+const users: User[] = []; //[{id:1001, username:'test', email:'test@example.com'},{id:1002, username:'test1', email:'test1@example.com'}]
 export const fakeDb = {
-  async seedUser(partial: Partial<Omit<DbUser, 'id'>> = {}): Promise<DbUser> {
-    // Real equivalent:
-    //   INSERT INTO users (username, email) VALUES ($1, $2) RETURNING *;
-    const user: DbUser = {
+  // Create a user
+  async createUser(username: string, email: string): Promise<User> {
+    const user: User = {
       id: randomUUID(),
-      username: partial.username ?? `seed_user_${randomUUID().slice(0, 8)}`,
-      email: partial.email ?? `${randomUUID().slice(0, 8)}@example.com`,
+      username: username,
+      email: email
     };
-    usersTable.set(user.id, user);
+    users.push(user);
     return user;
   },
-
-  async findUserById(id: string): Promise<DbUser | undefined> {
-    // Real equivalent: SELECT * FROM users WHERE id = $1;
-    return usersTable.get(id);
+  // Find a user
+  async findUser(id: string): Promise<User | undefined> {
+    return users.find(user => user.id === id);
   },
-
+  // Delete a user
   async deleteUser(id: string): Promise<void> {
-    // Real equivalent: DELETE FROM users WHERE id = $1;
-    usersTable.delete(id);
+    const index = users.findIndex(user => user.id === id);
+    if (index !== -1) {
+      users.splice(index, 1);
+    }
   },
-
+  // Count users
   async countUsers(): Promise<number> {
-    // Real equivalent: SELECT COUNT(*) FROM users;
-    return usersTable.size;
+    return users.length;
   },
-
-  async clearAllUsers(): Promise<void> {
-    // Real equivalent: TRUNCATE TABLE users; (or DELETE FROM users;)
-    usersTable.clear();
-  },
+  // Delete all users
+  async deleteAllUsers(): Promise<void> {
+    users.length = 0;
+  }
 };
