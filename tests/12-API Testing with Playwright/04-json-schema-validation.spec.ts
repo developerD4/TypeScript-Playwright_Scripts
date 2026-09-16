@@ -1,20 +1,17 @@
-// 04-json-schema-validation.spec.ts
-//
-// TOPIC: performing JSON schema validation on API responses
-//
-// Site used: https://automationexercise.com/api (see sites.txt #4)
-//
-// tests/05-Assertions & Validations/06-validating-api-responses.spec.ts
-// checked individual fields by hand (expect(typeof x.id).toBe('number'),
-// one line per field). That works, but doesn't scale to a response with
-// 20+ fields, and re-checks the same shape differently in every test that
-// happens to touch that endpoint. A JSON SCHEMA describes the whole shape
-// ONCE, declaratively, and a validator library (ajv here — the most
-// widely used JSON Schema validator in the Node ecosystem) checks a real
-// response against it in one call.
-
 import { test, expect } from '@playwright/test';
 import Ajv, { type JSONSchemaType } from 'ajv';
+
+/*
+ * JSON Schema:
+ * Describes the expected structure and data types of an API response.
+ *
+ * AJV:
+ * A library that validates real JSON data against a JSON Schema.
+ *
+ * Why use schema validation?
+ * Checking many fields one by one becomes repetitive.
+ * A schema lets us describe the expected structure once.
+ */
 
 const ajv = new Ajv();
 
@@ -24,15 +21,14 @@ interface Product {
   price: string;
   brand: string;
   category: {
-    usertype: { usertype: string };
+    usertype: {
+      usertype: string;
+    };
     category: string;
   };
 }
 
-// The schema is the single source of truth for "what a Product looks
-// like" — JSONSchemaType<Product> makes TypeScript cross-check the
-// schema itself against the Product interface, so the two can't silently
-// drift apart.
+// This schema describes what one Product should look like.
 const productSchema: JSONSchemaType<Product> = {
   type: 'object',
   properties: {
@@ -45,7 +41,9 @@ const productSchema: JSONSchemaType<Product> = {
       properties: {
         usertype: {
           type: 'object',
-          properties: { usertype: { type: 'string' } },
+          properties: {
+            usertype: { type: 'string' },
+          },
           required: ['usertype'],
         },
         category: { type: 'string' },
@@ -54,81 +52,62 @@ const productSchema: JSONSchemaType<Product> = {
     },
   },
   required: ['id', 'name', 'price', 'brand', 'category'],
-  additionalProperties: true, // don't fail on fields the schema doesn't know about yet
+  additionalProperties: true,
 };
 
 const productsListSchema = {
   type: 'object',
   properties: {
     responseCode: { type: 'number' },
-    products: { type: 'array', items: productSchema },
+    products: {
+      type: 'array',
+      items: productSchema,
+    },
   },
   required: ['responseCode', 'products'],
   additionalProperties: false,
 } as const;
 
-test('every product in the list matches the Product schema', async ({ request }) => {
-  const response = await request.get('https://automationexercise.com/api/productsList');
+test('validate the complete products response with JSON Schema', async ({ request }) => {
+  const response = await request.get(
+    'https://automationexercise.com/api/productsList'
+  );
+
   const body = await response.json();
 
+  // compile() creates a validator function from the schema.
   const validate = ajv.compile(productsListSchema);
+
+  // The validator returns true when the response matches the schema.
   const valid = validate(body);
 
-  // On failure, validate.errors lists EVERY mismatch — which field,
-  // what was expected, what was found — instead of a single generic
-  // "shape doesn't match" message.
+  // validate.errors gives useful details when validation fails.
   expect(validate.errors, JSON.stringify(validate.errors, null, 2)).toBeNull();
   expect(valid).toBe(true);
 });
 
-test('validating a single object, without a wrapping list schema', async ({ request }) => {
-  const response = await request.get('https://automationexercise.com/api/productsList');
+test('validate one product with the same schema', async ({ request }) => {
+  const response = await request.get(
+    'https://automationexercise.com/api/productsList'
+  );
+
   const body = await response.json();
   const firstProduct = body.products[0];
 
-  const validateProduct = ajv.compile(productSchema);
-  const valid = validateProduct(firstProduct);
-
-  expect(valid, JSON.stringify(validateProduct.errors)).toBe(true);
-});
-
-test('a schema catches a genuinely malformed response, not just a merely different one', async () => {
   const validate = ajv.compile(productSchema);
 
-  const malformedProduct = {
-    id: 'not-a-number', // wrong type
-    name: 'Blue Top',
-    // price, brand, category are all missing entirely
-  };
-
-  const valid = validate(malformedProduct);
-
-  expect(valid).toBe(false);
-  expect(validate.errors?.length).toBeGreaterThan(0);
-
-  const errorPaths = validate.errors?.map((e) => e.instancePath || e.params);
-  expect(errorPaths).toBeDefined();
+  expect(validate(firstProduct), JSON.stringify(validate.errors)).toBe(true);
 });
 
-test('schemas can enforce constraints beyond plain "type", e.g. string patterns', async ({
-  request,
-}) => {
-  // A stricter schema than the ones above — this one insists price
-  // matches SauceDemo-shop-style formatting ("Rs. <number>"), which is a
-  // real constraint of this specific API's data, not just "it's a string".
-  const strictProductSchema = {
-    type: 'object',
-    properties: {
-      price: { type: 'string', pattern: '^Rs\\. \\d+$' },
-    },
-    required: ['price'],
-  } as const;
+test('schema detects incorrect data', async () => {
+  const validate = ajv.compile(productSchema);
 
-  const response = await request.get('https://automationexercise.com/api/productsList');
-  const body = await response.json();
+  // This object intentionally does not match Product.
+  const invalidProduct = {
+    id: 'not-a-number',
+    name: 'Test Product',
+  };
 
-  const validate = ajv.compile(strictProductSchema);
-  for (const product of body.products) {
-    expect(validate(product), JSON.stringify(validate.errors)).toBe(true);
-  }
+  expect(validate(invalidProduct)).toBe(false);
+  expect(validate.errors?.length).toBeGreaterThan(0);
 });

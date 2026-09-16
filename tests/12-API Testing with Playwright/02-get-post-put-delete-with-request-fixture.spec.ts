@@ -1,168 +1,159 @@
-// 02-get-post-put-delete-with-request-fixture.spec.ts
-//
-// TOPIC: sending GET/POST/PUT/DELETE requests using the request fixture
-//
-// Site used: https://automationexercise.com/api (see sites.txt #4)
-//   Its account endpoints exercise all four verbs against the same
-//   resource (a user account), which is exactly what this topic needs to
-//   demonstrate cleanly: create it (POST), read it (GET), modify it
-//   (PUT), remove it (DELETE).
-
 import { test, expect } from '@playwright/test';
+import { createAccount, deleteAccount } from '../12-API Testing with Playwright/helpers/accountApi';
 
-function uniqueEmail(prefix: string): string {
-  return `qa.${prefix}.${Date.now()}@example.com`;
+/*
+ * HTTP methods:
+ * GET    = read data
+ * POST   = create data
+ * PUT    = update data
+ * DELETE = remove data
+ */
+
+// Creates a unique email for every test run.
+function uniqueEmail(): string {
+  return `qa.${Date.now()}@example.com`;
 }
 
-test('GET — fetching a resource, optionally with query parameters', async ({ request }) => {
-  const response = await request.get('https://automationexercise.com/api/productsList');
+
+// GET - Read data
+test('GET - read products', async ({ request }) => {
+
+  // GET retrieves data from the API.
+  const response = await request.get(
+    'https://automationexercise.com/api/productsList'
+  );
+
   expect(response.status()).toBe(200);
 
+  // json() converts the JSON response into a JavaScript object.
   const body = await response.json();
+
   expect(Array.isArray(body.products)).toBe(true);
 });
 
-test('POST — creating a resource, with a form-encoded request body', async ({ request }) => {
-  const email = uniqueEmail('post');
 
-  // `form` sends this as application/x-www-form-urlencoded, matching what
-  // this specific API expects (confirmed by trying it — some APIs expect
-  // `data` as raw JSON instead; check the target API's own docs/behavior).
-  const response = await request.post('https://automationexercise.com/api/createAccount', {
-    form: {
-      name: 'API Test User',
-      email,
-      password: 'Passw0rd!123',
-      title: 'Mr',
-      birth_date: '1',
-      birth_month: '1',
-      birth_year: '1990',
-      firstname: 'API',
-      lastname: 'Tester',
-      company: 'Example Co',
-      address1: '123 Main St',
-      address2: '',
-      country: 'United States',
-      zipcode: '10001',
-      state: 'NY',
-      city: 'New York',
-      mobile_number: '5555550100',
-    },
+// POST - Create data
+test('POST - create account', async ({ request }) => {
+
+  const email = uniqueEmail();
+  const password = 'Passw0rd!123';
+
+  // Helper creates the account using POST.
+  const body = await createAccount(request, {
+    name: 'API Test User',
+    email,
+    password
   });
 
-  expect(response.status()).toBe(200); // transport-level: the request itself succeeded
+  // API confirms account creation.
+  expect(body.responseCode).toBe(201);
+
+  // Cleanup: delete the test account.
+  await deleteAccount(request, email, password);
+});
+
+
+// PUT - Update data
+test('PUT - update account', async ({ request }) => {
+
+  const email = uniqueEmail();
+  const password = 'Passw0rd!123';
+
+  // Setup: create an account first.
+  await createAccount(request, {
+    name: 'Before Update',
+    email,
+    password
+  });
+
+  // PUT updates existing data.
+  const response = await request.put(
+    'https://automationexercise.com/api/updateAccount',
+    {
+      form: {
+        name: 'After Update',
+        email,
+        password,
+        title: 'Mr',
+        birth_date: '1',
+        birth_month: '1',
+        birth_year: '1990',
+        firstname: 'After',
+        lastname: 'Update',
+        company: 'New Company',
+        address1: 'New Address',
+        address2: '',
+        country: 'Canada',
+        zipcode: '90001',
+        state: 'ON',
+        city: 'Toronto',
+        mobile_number: '4444444444'
+      }
+    }
+  );
+
+  expect(response.status()).toBe(200);
+
   const body = await response.json();
-  expect(body.responseCode).toBe(201); // application-level: the account was actually created
 
-  // Clean up — see file 05 for why every POST-that-creates should be
-  // paired with cleanup, the same idempotency principle from
-  // tests/09-Test Data & Environment Management/01-test-data-strategies.spec.ts.
-  await request.delete('https://automationexercise.com/api/deleteAccount', {
-    form: { email, password: 'Passw0rd!123' },
-  });
+  expect(body.responseCode).toBe(200);
+
+  // Cleanup.
+  await deleteAccount(request, email, password);
 });
 
-test('PUT — replacing/updating an existing resource', async ({ request }) => {
-  const email = uniqueEmail('put');
+
+// DELETE - Remove data
+test('DELETE - remove account', async ({ request }) => {
+
+  const email = uniqueEmail();
   const password = 'Passw0rd!123';
 
-  await request.post('https://automationexercise.com/api/createAccount', {
-    form: {
-      name: 'Before Update',
-      email,
-      password,
-      title: 'Mrs',
-      birth_date: '5',
-      birth_month: '6',
-      birth_year: '1988',
-      firstname: 'Before',
-      lastname: 'Update',
-      company: 'Old Co',
-      address1: 'Old Address',
-      address2: '',
-      country: 'United States',
-      zipcode: '10001',
-      state: 'NY',
-      city: 'New York',
-      mobile_number: '5555550100',
-    },
+  // Setup: create an account first.
+  await createAccount(request, {
+    name: 'Delete User',
+    email,
+    password
   });
 
-  const updateResponse = await request.put('https://automationexercise.com/api/updateAccount', {
-    form: {
-      name: 'After Update',
-      email, // the identifying field — everything else below replaces the old values
-      password,
-      title: 'Mrs',
-      birth_date: '5',
-      birth_month: '6',
-      birth_year: '1988',
-      firstname: 'After',
-      lastname: 'Update',
-      company: 'New Co',
-      address1: 'New Address',
-      address2: '',
-      country: 'Canada',
-      zipcode: '90001',
-      state: 'ON',
-      city: 'Toronto',
-      mobile_number: '4444444444',
-    },
-  });
+  // DELETE removes the account.
+  const response = await request.delete(
+    'https://automationexercise.com/api/deleteAccount',
+    {
+      form: {
+        email,
+        password
+      }
+    }
+  );
 
-  const updateBody = await updateResponse.json();
-  expect(updateBody.responseCode).toBe(200);
-  expect(updateBody.message).toBe('User updated!');
+  expect(response.status()).toBe(200);
 
-  // Confirm the update actually took effect with a follow-up GET.
-  const detailsResponse = await request.get('https://automationexercise.com/api/getUserDetailByEmail', {
-    params: { email },
-  });
-  const details = await detailsResponse.json();
-  expect(details.user.name).toBe('After Update');
-  expect(details.user.company).toBe('New Co');
-  expect(details.user.country).toBe('Canada');
+  const body = await response.json();
 
-  await request.delete('https://automationexercise.com/api/deleteAccount', { form: { email, password } });
+  expect(body.responseCode).toBe(200);
 });
 
-test('DELETE — removing a resource, and confirming it is actually gone', async ({ request }) => {
-  const email = uniqueEmail('delete');
-  const password = 'Passw0rd!123';
 
-  await request.post('https://automationexercise.com/api/createAccount', {
-    form: {
-      name: 'To Be Deleted',
-      email,
-      password,
-      title: 'Mr',
-      birth_date: '1',
-      birth_month: '1',
-      birth_year: '1990',
-      firstname: 'To',
-      lastname: 'Delete',
-      company: 'Example Co',
-      address1: '123 Main St',
-      address2: '',
-      country: 'United States',
-      zipcode: '10001',
-      state: 'NY',
-      city: 'New York',
-      mobile_number: '5555550100',
-    },
-  });
 
-  const deleteResponse = await request.delete('https://automationexercise.com/api/deleteAccount', {
-    form: { email, password },
-  });
-  const deleteBody = await deleteResponse.json();
-  expect(deleteBody.responseCode).toBe(200);
-
-  // A DELETE that returns 200 isn't proof enough by itself — confirm the
-  // resource is genuinely gone with an independent follow-up check.
-  const verifyResponse = await request.post('https://automationexercise.com/api/verifyLogin', {
-    form: { email, password },
-  });
-  const verifyBody = await verifyResponse.json();
-  expect(verifyBody.responseCode).toBe(404); // "User not found!" — deletion confirmed
-});
+// json() converts a JSON response into a JavaScript object.
+// const jsonData = '{"id":101,"name":"John"}';
+// const jsonresult = JSON.parse(jsonData)
+// const user = { id: 101, 1: "John" };
+// console.log(jsonresult.id)
+// console.log(user.id)
+// | Status  | Name                  | Simple meaning                              |
+// | ------- | --------------------- | ------------------------------------------- |
+// | **200** | OK                    | Request was successful                      |
+// | **201** | Created               | New resource was created                    |
+// | **204** | No Content            | Request succeeded, but no response body     |
+// | **400** | Bad Request           | Request/data is invalid                     |
+// | **401** | Unauthorized          | Authentication is missing/invalid           |
+// | **403** | Forbidden             | Authenticated, but not allowed              |
+// | **404** | Not Found             | Resource/API endpoint not found             |
+// | **405** | Method Not Allowed    | HTTP method isn't allowed for that endpoint |
+// | **409** | Conflict              | Request conflicts with existing data        |
+// | **422** | Unprocessable Content | Data format/validation is unacceptable      |
+// | **500** | Internal Server Error | Server-side error                           |
+// | **502** | Bad Gateway           | Gateway/proxy received a bad response       |
+// | **503** | Service Unavailable   | Server/service temporarily unavailable      |

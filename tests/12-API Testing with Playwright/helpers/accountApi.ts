@@ -1,12 +1,11 @@
-// helpers/accountApi.ts
-//
-// Small wrapper around Automation Exercise's account endpoints
-// (https://automationexercise.com/api), reused by 05-chaining-api-calls-...
-// and 07-hybrid-api-and-ui-testing, both of which need to create and
-// clean up a throwaway account without repeating the same long form-field
-// list in every test file.
-
 import type { APIRequestContext } from '@playwright/test';
+
+/*
+ * Helper:
+ * Keeps repeated API setup/cleanup code in one place.
+ * The tests can call createAccount() and deleteAccount() instead of
+ * repeating the long form-data object.
+ */
 
 const BASE_URL = 'https://automationexercise.com';
 
@@ -16,17 +15,13 @@ export interface NewAccountInput {
   password: string;
 }
 
-export interface CreateAccountResponse {
-  responseCode: number;
-  message: string;
-}
-
-/** Creates a throwaway Automation Exercise account and returns the raw API response. */
 export async function createAccount(
   request: APIRequestContext,
   input: NewAccountInput
-): Promise<CreateAccountResponse> {
+) {
+  // Sends the POST request needed to create an account.
   const [firstName, ...rest] = input.name.split(' ');
+
   const response = await request.post(`${BASE_URL}/api/createAccount`, {
     form: {
       name: input.name,
@@ -36,8 +31,8 @@ export async function createAccount(
       birth_date: '1',
       birth_month: '1',
       birth_year: '1990',
-      firstname: firstName ?? input.name,
-      lastname: rest.join(' ') || 'Test',
+      firstname: firstName || 'Test',
+      lastname: rest.join(' ') || 'User',
       company: 'Example Co',
       address1: '123 Main St',
       address2: '',
@@ -48,14 +43,17 @@ export async function createAccount(
       mobile_number: '5555550100',
     },
   });
+
   return response.json();
 }
 
-/** Deletes an account created with createAccount() — call this in cleanup so runs stay idempotent. */
 export async function deleteAccount(
   request: APIRequestContext,
   email: string,
   password: string
 ): Promise<void> {
-  await request.delete(`${BASE_URL}/api/deleteAccount`, { form: { email, password } });
+  // Removes test data during cleanup.
+  await request.delete(`${BASE_URL}/api/deleteAccount`, {
+    form: { email, password },
+  });
 }

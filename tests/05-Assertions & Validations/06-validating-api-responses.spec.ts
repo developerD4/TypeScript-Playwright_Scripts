@@ -8,11 +8,11 @@ test('Check API status code', async ({ request }) => {
   expect(response.ok()).toBe(true);
 });
 // ==================== RESPONSE HEADER ====================
-// test('Check response header', async ({ request }) => {
-//   const response = await request.get('https://automationexercise.com/api/productsList');
-//   const contentType = response.headers()['content-type'];
-//   expect(contentType).toContain('text/html');
-// });
+test('Check response header', async ({ request }) => {
+  const response = await request.get('https://automationexercise.com/api/productsList');
+  const contentType = response.headers()['content-type'];
+  expect(contentType).toContain('text/html');
+});
 // ==================== JSON RESPONSE ====================
 test('Check JSON response', async ({ request }) => {
   const response = await request.get('https://jsonplaceholder.typicode.com/posts');
@@ -29,9 +29,7 @@ test('Check JSON response', async ({ request }) => {
 });
 // ==================== PRODUCT DATA ====================
 test('Check product data', async ({ request }) => {
-  const response = await request.get(
-    'https://jsonplaceholder.typicode.com/posts'
-  );
+  const response = await request.get('https://jsonplaceholder.typicode.com/posts');
   const body = await response.json();
   const product = body[0];
   console.log('Product:', product);
