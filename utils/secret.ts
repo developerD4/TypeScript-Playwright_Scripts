@@ -8,5 +8,4 @@ export function getSecret(name: string): string {
     }
     return value;
 }
-//const password =
-// getSecret('PASSWORD');
+//const password = getSecret('PASSWORD');

@@ -1,0 +1,111 @@
+1. npm install dotenv ==> Definition: dotenv loads values from .env files into process.env.
+
+2. This is only to demonstrate environment switching. In a real project, QA and Staging would normally have different URLs.
+
+3. $env:TEST_ENV="qa" → Selects the environment for the current terminal session.
+npx playwright test → Starts the Playwright test execution.
+
+4. Environment (env) → An environment is a setup where our application and tests run, such as QA, Staging, or Production.
+.env file → A .env file stores environment-specific values such as URLs, usernames, and configuration settings outside the test code.
+dotenv → dotenv is an npm package that reads values from a .env file and makes them available through process.env.
+
+| Folder        | One-line definition                                                          |
+| ------------- | ---------------------------------------------------------------------------- |
+| **tests**     | Contains the **actual test cases and test scenarios**.                       |
+| **pages**     | Contains **page classes with locators and page actions**.                    |
+| **core**      | Contains **common framework-level functionality** used across the project.   |
+| **factory**   | Contains **logic for creating and providing required objects or test data**. |
+| **utils**     | Contains **reusable helper functions** for common tasks.                     |
+| **config**    | Contains **environment and framework configuration settings**.               |
+| **report**    | Contains **test execution reports and reporting-related files**.             |
+| **test-data** | Contains **input data required by test cases**.                              |
+| **fixtures**  | Contains **common test setup and reusable test resources**.                  |
+
+
+//Logger is a reusable way to record information, warnings, or errors during execution.
+//A wrapper is a reusable function that adds common behavior around an existing action.
+//A data factory is a reusable function that creates test data when needed.
+//Global setup runs once before the complete test run, while global teardown runs once after it finishes.
+
+Logger
+→ Records execution information
+
+Wrapper
+→ Adds common behavior to an action
+
+Factory
+→ Creates reusable test data
+
+Global Setup
+→ Runs once before all tests
+
+Global Teardown
+→ Runs once after all tests
+
+Faker:
+Faker is a JavaScript/TypeScript library used to generate realistic and random test data such as names, emails, phone numbers, and addresses.
+To install - npm install --save-dev @faker-js/faker
+To check - npm list @faker-js/faker
+To use - import { faker } from '@faker-js/faker';
+
+//csv
+To install - npm install csv-parse
+
+//Excel
+TO install - npm install xlsx
+
+//check my TypeScript code for errors, but don't create JavaScript files.
+npx        → runs the TypeScript compiler from your project
+tsc        → TypeScript compiler
+--noEmit   → check the code, but don't generate .js files
+//npm audit
+
+//new Date().toISOString() is a built‑in JavaScript method (fully supported in TypeScript)
+// that converts a Date object into a UTC ISO‑8601 formatted string like:
+//2026-08-26T06:47:12.345Z
+
+//Debug
+$env:PWDEBUG="1"; npx playwright test built-in-locators.spec.ts
+
+npx playwright test tests/login.spec.ts --debug
+
+//Data Driven:
+//Idempotent means an operation or action produces the exact same result whether you run it once or do it many times
+
+//File System module, Used for reading, writing, deleting, or updating files.
+
+// Used for handling file and folder paths in a safe, cross‑platform way.
+
+//users is an array where each element must follow the LoginData interface.
+
+//path.join() automatically creates a correct, safe, OS‑friendly path.
+//Because different operating systems use different path separators: Windows → \, macOS/Linux → /
+//__dirname → current folder of the file, '../test-data/users.csv' → relative path
+//e.g __dirname -> C:\Projects\orangehrm\tests, relative path
+// path.join() → combines them into one clean path
+
+//read the file and return its content as a text string using UTF‑8 encoding.
+//readFileSync -> reads a file synchronously (blocking)
+//'utf-8' → tells Node.js to return the file as a readable string. If you don’t specify 'utf-8', Node.js returns a Buffer (raw binary data), not a string.
+//without utf-8, output will be <Buffer 7b 22 75 73 65 72 6e 61 6d 65 ... >
+//fileContent contains the JSON data as a string, not as a JavaScript array.
+
+//JSON file contains multiple login objects, Playwright loads them into an array, and TypeScript ensures each object matches the interface.
+
+//Excel 
+//XLSX.utils Object: Contains utility/helper functions provided by the xlsx library for manipulating Excel data.
+
+[
+  {
+    "username": "Admin",
+    "password": "admin123"
+  },
+  {
+    "username": "InvalidUser",
+    "password": "wrong123"
+  },
+  {
+    "username": "TestUser",
+    "password": "test123"
+  }
+]

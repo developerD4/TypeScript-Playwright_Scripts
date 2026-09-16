@@ -1,0 +1,101 @@
+Allure Report Setup
+1. Check Node.js & npm:
+node -v
+npm -v
+Node.js   → JavaScript runtime environment
+npm   → Node package manager
+
+2. Install Allure Playwright:
+npm install --save-dev allure-playwright allure-js-commons
+allure-playwright → Connects Playwright with Allure
+allure-js-commons → Provides Allure APIs
+
+3. Install Allure CLI:
+npm install --save-dev allure
+Verify installation:
+npx allure --version
+Allure CLI (Command-Line Interface) → Generates and opens reports
+
+4. Configure Playwright:
+In `playwright.config.ts`:
+reporter: [
+  [
+    'allure-playwright',
+    {
+      resultsDir: 'allure-results',
+    },
+  ],
+]
+allure-playwright → Collects Playwright test information
+resultsDir → Stores raw Allure results
+
+5. Run the Tests:
+npx playwright test
+This creates: allure-results/
+  allure-results   → Contains raw test-result files
+
+6. Generate Allure Report:
+npx allure generate allure-results --clean -o allure-report
+This creates: allure-report/
+  allure-report   → Contains generated HTML report
+
+7. Open Allure Report:
+npx allure open allure-report
+  allure open   → Opens generated Allure report
+
+8. Allure Serve:
+npx allure serve allure-results
+  allure serve   → Generates and opens temporarily
+Use this when you want a quick local report   without manually generating `allure-report`.
+
+9. Add npm Scripts:
+In `package.json`:
+{
+  "scripts": {
+    "test": "playwright test",
+    "allure:generate": "allure generate allure-results --clean -o allure-report",
+    "allure:open": "allure open allure-report",
+    "allure:serve": "allure serve allure-results"
+  }
+}
+Now instead of typing the long commands:
+npm test
+npm run allure:generate
+npm run allure:open
+Or directly:
+npm run allure:serve
+
+Complete Flow:
+Install
+   ↓
+Configure Reporter
+   ↓
+npx playwright test
+   ↓
+allure-results/
+   ↓
+allure generate
+   ↓
+allure-report/
+   ↓
+allure open
+
+Remember:
+allure-playwright → Collects results
+allure-results    → Stores raw results
+allure CLI        → Generates report
+allure-report     → Stores HTML report
+allure serve      → Quick temporary report
+
+| Short form  | Full form                                   | Simple meaning                         |
+| ----------- | ------------------------------------------- | -------------------------------------- |
+|   CLI       | Command-Line Interface                      | Run commands using terminal            |
+|   npm       | Node Package Manager                        | Installs and manages packages          |
+|   Node.js   | Node.js JavaScript Runtime Environment      | Runs JavaScript outside browser        |
+|   API       | Application Programming Interface           | Allows programs to communicate         |
+|   HTML      | HyperText Markup Language                   | Structure of web pages                 |
+|   JSON      | JavaScript Object Notation                  | Stores structured data                 |
+|   URL       | Uniform Resource Locator                    | Address of a web resource              |
+|   CI        | Continuous Integration                      | Automatically builds and tests code    |
+|   CD        | Continuous Delivery / Continuous Deployment | Automatically delivers or deploys code |
+

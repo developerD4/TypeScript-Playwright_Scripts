@@ -1,0 +1,79 @@
+I. Steps for jenkins:
+cd /d C:\...\Playwright-Framework -> Moves Jenkins to the folder containing your Playwright project.
+call npm install -> Installs all npm packages listed in package.json.
+call npm run install:browsers -> Installs the Playwright browsers required by the project.
+call npm test -> Runs the Playwright test cases defined in the project.
+call npm run <script> -> Executes a custom script defined in package.json.
+echo -> Prints a message in the Jenkins console to show what step is running.
+node --version -> Checks the Node.js version available to Jenkins.
+npm --version -> Checks the npm version available to Jenkins.
+call -> Runs an npm/batch command and returns control to the Jenkins batch script.
+/d -> Changes both the drive and folder location
+
+1. workflow:
+Jenkins
+   ↓
+Windows Machine
+   ↓
+C:\PlaywrightProject
+Step 4 — Create a Jenkins job
+
+Open Jenkins in your browser.
+
+Usually:http://localhost:8080
+
+Click:New Item
+
+Enter:Playwright-Tests
+
+Select:Freestyle project
+
+Click:OK
+2. Configuration:
+Build Steps
+   ↓
+Add build step
+   ↓
+Execute Windows batch command: 
+cd /d C:\Users\Aveva\Desktop\Playwright-Framework
+
+echo Starting Playwright tests...
+call npm install
+call npm run install:browsers
+call npm test
+echo Playwright execution completed.
+
+In Playwright project, Open package.json: add "install:browsers": "playwright install" inside script
+
+II. To publish Playwright HTML reports:
+1. Jenkins → Manage Jenkins → Plugins → Available plugins -> HTML publisher
+2. playwright.config.ts -> reporter: 'html'
+3. Configure Jenkins:
+i) Open: Jenkins → Your Job → Configure
+ii) Go to: Post-build Actions
+iii) Click: Add post-build action → Publish HTML reports
+
+iv) Enter:
+Field				Value
+HTML directory to archive	playwright-report
+Index page(s)			index.html
+Report title			Playwright HTML Report
+
+v) Windows batch command: 
+xcopy /E /I /Y playwright-report "C:\ProgramData\Jenkins\.jenkins\workspace\Playwright-Typescript-project\playwright-report"
+/E → copies all subfolders, including empty folders
+/I → assumes destination is a directory
+/Y → does not ask for overwrite confirmation
+xcopy → copies the new files over the existing files
+
+4. Manage Jenkins → Script Console ==> System.setProperty("hudson.model.DirectoryBrowserSupport.CSP", "") ==> Click run
+Error message: Refused to execute inline script because it violates
+the Content Security Policy. Because Jenkins Content Security Policy (CSP) blocking the JavaScript that the Playwright HTML report needs to render. Jenkins specifically documents that published HTML reports can appear broken when CSP blocks required JavaScript/CSS.
+
+III. Integrate Allure reports:
+xcopy /E /I /Y "C:\Users\Aveva\Desktop\Playwright-Framework\allure-results" "C:\ProgramData\Jenkins\.jenkins\workspace\Playwright-Typescript-project\allure-results"
+Plugins -> Install Allure 3
+Manage Jenkins -> Tool/configure -> Under Allure, Select
+
+
+

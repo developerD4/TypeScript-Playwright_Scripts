@@ -1,0 +1,5 @@
+[7:44:36 pm] [INFO] Opening OrangeHRM login page
+[7:44:38 pm] [INFO] Entering value in Username field
+[7:44:38 pm] [INFO] Entering value in Password field
+[7:44:38 pm] [INFO] Clicking Login button
+[7:44:39 pm] [INFO] Login button clicked successfully
